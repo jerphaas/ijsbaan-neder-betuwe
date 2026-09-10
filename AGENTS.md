@@ -10,3 +10,4 @@
 - Houd de sponsorpakketten compact: bedrag, munten en een korte samenvatting op de kaart, alle voordelen in het keuzevenster. Op mobiel twee kolommen; voorkom opnieuw grote, hoge kaarten.
 - Gebruik de lokale Lucide-iconen voor één consistente stijl. Houd sneeuw subtiel en beperkt tot de hoofdfoto, met een pauzeknop en respect voor minder beweging.
 - Schrijf warme, concrete Nederlandse teksten zonder herhaalde slogans. Behoud alle bedragen, voorwaarden en bronfeiten bij het inkorten.
+- Roosterprincipe is door de opdrachtgever bevestigd op 10 september 2026: schooldagen 15.00–20.00; zaterdag en kerstvakantie 10.00–20.00; zondag, maandag, beide kerstdagen en nieuwjaarsdag gesloten. Toon dit als voorlopig rooster met de actuele kalenderdatums. `openingHours.through` bevestigt niet de officiële einddatum. Bron en vakantieperiode staan in README.md.

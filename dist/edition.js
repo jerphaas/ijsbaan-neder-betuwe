@@ -8,6 +8,20 @@ window.IJSBAAN = {
       season: '2026 / 2027',
       start: '2026-12-11',
       end: null,
+      openingHours: {
+        status: 'provisional',
+        through: '2027-01-03',
+        holidayStart: '2026-12-19',
+        holidayEnd: '2027-01-03',
+        closedWeekdays: [0, 1],
+        closedDates: {
+          '2026-12-25': 'Eerste kerstdag',
+          '2026-12-26': 'Tweede kerstdag',
+          '2027-01-01': 'Nieuwjaarsdag'
+        },
+        schoolDay: ['15:00', '20:00'],
+        dayOff: ['10:00', '20:00']
+      },
       location: 'Grasveld bij het gemeentehuis',
       status: 'current',
       sponsorForm: 'downloads/sponsorformulier-2026.pdf'
