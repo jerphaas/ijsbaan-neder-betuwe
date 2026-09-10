@@ -14,6 +14,7 @@ De complete statische website staat in `dist/`. GitHub Pages publiceert deze map
 - `dist/index.html`: teksten, sponsorpakketten en algemene inhoud. Bij een jaarlijkse wissel ook editiegebonden copy, formulieren en metadata controleren.
 - `dist/styles.css`: vormgeving en responsive weergave.
 - `dist/app.js`: navigatie, sponsordialoog en agendadownload.
+- `dist/motion.css` en `dist/motion.js`: eenmalige introductie, scrollanimaties en hoverreacties. Respecteert `prefers-reduced-motion`, behoudt toetsenbordbediening en printweergave, en laat alle inhoud zien zonder JavaScript.
 - `dist/assets/`: aangeleverde foto's en logo.
 - `dist/downloads/`: het originele, digitaal invulbare sponsorformulier.
 

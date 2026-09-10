@@ -1,0 +1,153 @@
+/* Motion follows the existing design; all content is visible by default. */
+:root {
+  --ease-glide: cubic-bezier(.16, 1, .3, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-photo {
+    transform-origin: 55% 45%;
+    animation: winter-photo-arrive 3.8s var(--ease-glide) backwards;
+  }
+
+  .hero-content > .eyebrow,
+  .hero-content > h1,
+  .hero-description,
+  .hero-content > .button,
+  .hero-bottom {
+    animation: winter-rise .95s var(--ease-glide) backwards;
+  }
+  .hero-content > .eyebrow { animation-delay: .08s; }
+  .hero-content > h1 { animation-delay: .18s; }
+  .hero-description { animation-delay: .32s; }
+  .hero-content > .button { animation-delay: .46s; }
+  .hero-bottom { animation-delay: .58s; }
+
+  .winter-stamp {
+    animation: winter-stamp-arrive 1.65s var(--ease-glide) .4s backwards;
+  }
+  .hero-eyebrow .little-star {
+    display: inline-block;
+    animation: winter-star-turn 1.8s var(--ease-glide) .3s backwards;
+  }
+  .hero-content:focus-within > *, .hero-bottom:focus-within {
+    animation: none;
+  }
+
+  .motion-enabled .motion-reveal {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition:
+      opacity .8s var(--ease-glide) var(--reveal-delay, 0ms),
+      transform .8s var(--ease-glide) var(--reveal-delay, 0ms),
+      translate .35s var(--ease-glide),
+      box-shadow .35s ease,
+      background-color .35s ease;
+  }
+  .motion-enabled .motion-reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+  .motion-enabled .motion-reveal.motion-immediate,
+  .motion-enabled .motion-reveal:focus-within {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+  .motion-enabled .motion-reveal:focus-within {
+    transition-duration: 0s;
+  }
+
+  .button {
+    transition: background-color .25s ease, transform .35s var(--ease-glide), box-shadow .35s ease;
+  }
+  .button span, .text-link span, .package-link span,
+  .edition-item > a, .menu-toggle span {
+    transition: transform .3s var(--ease-glide);
+  }
+  .button:active { transform: translateY(0) scale(.98); }
+  .desktop-nav a { position: relative; }
+  .desktop-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 7px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .3s var(--ease-glide);
+  }
+  .desktop-nav a:focus-visible::after { transform: scaleX(1); }
+  .sponsor-card {
+    transition: translate .35s var(--ease-glide), box-shadow .35s ease;
+  }
+  .edition-item { transition: background-color .3s ease; }
+  .mobile-nav:not([hidden]) { animation: winter-menu-arrive .28s var(--ease-glide) backwards; }
+  dialog[open] { animation: winter-dialog-arrive .38s var(--ease-glide) backwards; }
+  dialog[open]::backdrop { animation: winter-backdrop-arrive .28s ease backwards; }
+  .faq-items details[open] > p { animation: winter-answer-arrive .3s ease backwards; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .desktop-nav a:hover::after { transform: scaleX(1); }
+    .button:hover { box-shadow: 0 8px 20px #073e3220; }
+    .button:hover span, .text-link:hover span, .package-link:hover span {
+      transform: translate(3px, -3px);
+    }
+    .sponsor-card:hover { translate: 0 -6px; box-shadow: 0 15px 35px #052d2938; }
+    .edition-item:hover { background-color: var(--paper); }
+    .edition-item:hover > a { transform: rotate(-8deg); }
+  }
+
+  @media (max-width: 640px) {
+    .motion-enabled .motion-reveal {
+      transform: translate3d(0, 18px, 0);
+      transition-delay: 0s;
+      transition-duration: .65s;
+    }
+    .motion-enabled .motion-reveal.is-revealed,
+    .motion-enabled .motion-reveal:focus-within { transform: none; }
+  }
+}
+
+@keyframes winter-rise {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes winter-photo-arrive {
+  from { transform: scale(1.075); }
+  to { transform: scale(1); }
+}
+@keyframes winter-stamp-arrive {
+  from { opacity: 0; transform: translateY(22px) rotate(-16deg) scale(.88); }
+  to { opacity: 1; transform: translateY(0) rotate(11deg) scale(1); }
+}
+@keyframes winter-star-turn {
+  from { transform: rotate(-135deg); }
+  to { transform: rotate(0deg); }
+}
+@keyframes winter-menu-arrive {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes winter-dialog-arrive {
+  from { opacity: 0; transform: translateY(16px) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes winter-backdrop-arrive {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes winter-answer-arrive {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce), print {
+  .motion-enabled .motion-reveal {
+    opacity: 1;
+    transform: none;
+    translate: none;
+    transition: none;
+  }
+}
