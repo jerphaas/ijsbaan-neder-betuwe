@@ -3,6 +3,17 @@
   const config = window.IJSBAAN;
   const edition = config.editions.find(item => item.id === config.activeEdition);
   if (!edition) throw new Error('De actieve editie ontbreekt.');
+  function icon(name) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'icon');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', `assets/icons.svg#${name}`);
+    svg.append(use);
+    return svg;
+  }
   const formatDate = (iso, options = { day: 'numeric', month: 'long', year: 'numeric' }) =>
     new Intl.DateTimeFormat('nl-NL', { ...options, timeZone: 'UTC' }).format(new Date(`${iso}T12:00:00Z`));
   const setText = (selector, value) => document.querySelectorAll(selector).forEach(el => { el.textContent = value; });
@@ -29,8 +40,8 @@
     const status = document.createElement('span'); status.className = 'edition-status';
     status.textContent = item.id === edition.id ? 'DEZE WINTER' : item.status === 'next' ? 'VOLGENDE EDITIE' : 'BINNENKORT MEER';
     const action = document.createElement(item.id === edition.id ? 'a' : 'span');
-    if (item.id === edition.id) { action.href = '#bezoek'; action.setAttribute('aria-label', `Bekijk de editie ${item.place}`); action.textContent = '↗'; }
-    else { action.className = 'edition-symbol'; action.setAttribute('aria-hidden', 'true'); action.textContent = '✳'; }
+    if (item.id === edition.id) { action.href = '#bezoek'; action.setAttribute('aria-label', `Bekijk de editie ${item.place}`); action.append(icon('arrow-up-right')); }
+    else { action.className = 'edition-symbol'; action.setAttribute('aria-hidden', 'true'); action.append(icon('snowflake')); }
     row.append(years, name, status, action); return row;
   }));
 
@@ -48,6 +59,14 @@
     event.preventDefault();
     const amount = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(link.dataset.package));
     document.getElementById('selected-package').textContent = `Jouw keuze: sponsorpakket van ${amount}`;
+    const selected = config.sponsorPackages[link.dataset.package];
+    document.getElementById('package-includes').replaceChildren(...selected.benefits.map(text => {
+      const item = document.createElement('li');
+      const label = document.createElement('span');
+      label.textContent = text;
+      item.append(icon('check'), label);
+      return item;
+    }));
     const subject = `Sponsoring IJsbaan ${edition.place} ${edition.season} – ${amount}`;
     const body = `Beste Ton,\n\nGraag dragen wij bij met het sponsorpakket van ${amount}.\n\nBedrijfsnaam:\nContactpersoon:\nTelefoon:\n\nHet ingevulde sponsorformulier voegen wij als bijlage toe.\n\nMet vriendelijke groet,\n`;
     document.getElementById('sponsor-email').href = `mailto:${config.contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

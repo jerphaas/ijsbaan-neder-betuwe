@@ -60,7 +60,7 @@
   .button {
     transition: background-color .25s ease, transform .35s var(--ease-glide), box-shadow .35s ease;
   }
-  .button span, .text-link span, .package-link span,
+  .button .icon, .text-link .icon, .package-link .icon,
   .edition-item > a, .menu-toggle span {
     transition: transform .3s var(--ease-glide);
   }
@@ -91,10 +91,10 @@
   @media (hover: hover) and (pointer: fine) {
     .desktop-nav a:hover::after { transform: scaleX(1); }
     .button:hover { box-shadow: 0 8px 20px #073e3220; }
-    .button:hover span, .text-link:hover span, .package-link:hover span {
+    .button:hover .icon, .text-link:hover .icon, .package-link:hover .icon {
       transform: translate(3px, -3px);
     }
-    .sponsor-card:hover { translate: 0 -6px; box-shadow: 0 15px 35px #052d2938; }
+    .sponsor-card:hover { translate: 0 -3px; box-shadow: 0 10px 25px #052d2930; }
     .edition-item:hover { background-color: var(--paper); }
     .edition-item:hover > a { transform: rotate(-8deg); }
   }

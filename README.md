@@ -15,6 +15,9 @@ De complete statische website staat in `dist/`. GitHub Pages publiceert deze map
 - `dist/styles.css`: vormgeving en responsive weergave.
 - `dist/app.js`: navigatie, sponsordialoog en agendadownload.
 - `dist/motion.css` en `dist/motion.js`: eenmalige introductie, scrollanimaties en hoverreacties. Respecteert `prefers-reduced-motion`, behoudt toetsenbordbediening en printweergave, en laat alle inhoud zien zonder JavaScript.
+- `dist/snow.js`: subtiele, pauzeerbare sneeuw in de hero. Minder vlokken op mobiel; pauzeert buiten beeld en in een verborgen tab; uit bij `prefers-reduced-motion`.
+- `dist/edition.js` bevat ook de volledige sponsorpakketdetails die in het keuzevenster verschijnen.
+- `dist/assets/icons.svg`: lokaal gehoste Lucide-iconen; de licentie staat in `dist/assets/LUCIDE-LICENSE.txt`.
 - `dist/assets/`: aangeleverde foto's en logo.
 - `dist/downloads/`: het originele, digitaal invulbare sponsorformulier.
 

@@ -7,3 +7,6 @@
 - Sponsorcontact is een download met een mailto-link. Verstuur geen e-mail namens een bezoeker en suggereer niet dat een mailto-link al een aanmelding heeft ingediend.
 - Gebruik de bestaande GitHub CLI-aanmelding buiten de sandbox voor account `jerphaas`. Een fout van `gh auth status` binnen de Windows-sandbox bewijst niet dat het token ongeldig is; deze sessie is op 10 september 2026 buiten de sandbox gevalideerd. Geen tokens afdrukken of opslaan.
 - Controleer desktop en mobiel, menubediening, sponsordialoog, download en daadwerkelijke gedeployde versie bij wijzigingen aan die onderdelen.
+- Houd de sponsorpakketten compact: bedrag, munten en een korte samenvatting op de kaart, alle voordelen in het keuzevenster. Op mobiel twee kolommen; voorkom opnieuw grote, hoge kaarten.
+- Gebruik de lokale Lucide-iconen voor één consistente stijl. Houd sneeuw subtiel en beperkt tot de hoofdfoto, met een pauzeknop en respect voor minder beweging.
+- Schrijf warme, concrete Nederlandse teksten zonder herhaalde slogans. Behoud alle bedragen, voorwaarden en bronfeiten bij het inkorten.
