@@ -105,3 +105,10 @@ h2>.handwritten{display:inline-block;font-size:1.25em;line-height:1.02;rotate:-3
 @media(max-width:360px){.hero h1{font-size:69px}.hero-description{font-size:15px;max-width:275px}.hero-content{padding-top:43px}.intro h2{font-size:34px}.winter-photo figcaption{font-size:19px}.photo-note{width:79px;height:77px;font-size:22px}.visit-item{padding-inline:20px}.contact h2{font-size:36px}.sponsor-card .coins{rotate:0deg!important}}
 @media(prefers-reduced-motion:reduce){.winter-photo,.photo-note,.info-label>.icon,.story-icon{transition:none}.winter-stamp:hover{animation:none}}
 @media print{.winter-photo{rotate:0deg;box-shadow:none}.photo-note,.winter-photo:before{display:none}.handwritten{font-family:var(--font);font-size:1em!important}.visit-item{box-shadow:none}}
+
+/* A small cozy accent; keep the established layout, type and photographs. */
+.winter-photo{background:#fffaf0;border-color:#e9dfcd;box-shadow:0 4px 12px #88612d0c,0 19px 38px #88612d10}
+.program-note{background:#f8ead4;border-color:#e9d9ba}
+.intro-image .photo-buddy{position:absolute;right:15px;bottom:49px;z-index:2;width:93px;height:auto;object-fit:contain;border-radius:0;pointer-events:none;filter:drop-shadow(0 3px 4px #5e441c18)}
+@media(max-width:640px){.intro-image .photo-buddy{width:77px;right:12px;bottom:40px}}
+@media print{.photo-buddy{display:none}}

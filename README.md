@@ -21,6 +21,7 @@ De complete statische website staat in `dist/`. GitHub Pages publiceert deze map
 - `dist/edition.js` bevat ook de volledige sponsorpakketdetails die in het keuzevenster verschijnen.
 - `dist/assets/icons.svg`: lokaal gehoste Lucide-iconen; de licentie staat in `dist/assets/LUCIDE-LICENSE.txt`.
 - `dist/assets/`: aangeleverde foto's en logo.
+- `dist/assets/schaatsmaatjes.png`: gegenereerde pinguïnillustratie, uitsluitend als klein decoratief accent op de bestaande fotokaart.
 - `dist/downloads/`: het originele, digitaal invulbare sponsorformulier.
 
 De startdatum is 11 december 2026. De Wordbrief vermeldt 3 januari 2027 als einddatum; het PDF-sponsorformulier vermeldt 2 januari 2027. Tot bevestiging staat `end: null` en communiceert de website alleen de startdatum. Het gedownloade bronformulier blijft ongewijzigd.
