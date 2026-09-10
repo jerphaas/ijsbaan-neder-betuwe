@@ -1,0 +1,8 @@
+{
+  "host": "vserver99.axc.eu",
+  "suppliedHost": "ftp.ijsbaannederbetuwe.nl",
+  "username": "ijsbaan",
+  "port": 21,
+  "remoteRoot": "/domains/ijsbaannederbetuwe.nl/public_html",
+  "publicUrl": "https://ijsbaannederbetuwe.nl/"
+}

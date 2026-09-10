@@ -2,11 +2,37 @@
 
 Publieke website voor IJsbaan Neder-Betuwe. Editie Opheusden 2026/2027, met Kesteren als volgende editie en een uitbreidbaar overzicht voor andere locaties.
 
-Website: https://jerphaas.github.io/ijsbaan-neder-betuwe/
+Website: https://ijsbaannederbetuwe.nl/
+
+Broncode en bewerkbare bestanden: https://github.com/jerphaas/ijsbaan-neder-betuwe
+
+De GitHub Pages-kopie blijft beschikbaar op https://jerphaas.github.io/ijsbaan-neder-betuwe/.
 
 ## Publicatie
 
-De complete statische website staat in `dist/`. GitHub Pages publiceert deze map met de workflow in `.github/workflows/pages.yml` na een push naar `main`. Er is geen build of installatie van pakketten nodig.
+De complete statische website staat in `dist/`. Er is geen build, CMS of installatie van pakketten nodig. Wijzigingen kunnen in deze projectmap worden gemaakt, of door Codex met de opdracht om de ijsbaanwebsite te wijzigen en te publiceren.
+
+1. Pas de gewenste bestanden in `dist/` aan en bekijk het resultaat lokaal.
+2. Sla de wijziging op met een Git-commit en push naar `main`.
+3. Dubbelklik op `publiceer.cmd`, of voer `python scripts/publish.py --publish` uit.
+
+De publicatieknop zet de **laatste lokale commit** online. Niet-gecommitte wijzigingen in `dist/` worden tegengehouden. Na een wijziging via de GitHub-website moet deze lokale map dus eerst worden bijgewerkt met `git pull --ff-only`. Alleen bestanden uit `dist/` gaan naar de webmap. Andere bestanden op de hosting worden behouden. Elk te vervangen bestand krijgt vooraf een lokale reservekopie; de startpagina wordt als laatste geplaatst. Daarna vergelijkt het script de openbare website en alle publieke bestanden met de commit.
+
+`python scripts/publish.py --check` controleert de online bestanden zonder iets te wijzigen. De geplaatste versie staat ook op `https://ijsbaannederbetuwe.nl/site-version.json`.
+
+GitHub Pages publiceert daarnaast automatisch vanuit `dist/` met `.github/workflows/pages.yml` na een push naar `main`. Die workflow publiceert niet naar de eigen hosting; daarvoor is de bovenstaande publicatieknop bedoeld.
+
+### Opgeslagen hostingroute
+
+- Niet-geheime instellingen: `deploy.json`.
+- Beveiligde verbinding: expliciete FTPS op poort 21, `vserver99.axc.eu`, met certificaatcontrole en versleutelde gegevensverbinding. De opgegeven alias `ftp.ijsbaannederbetuwe.nl` verwijst naar dezelfde server, maar het FTP-certificaat hoort bij `*.axc.eu`. Beide hostnamen en dezelfde IPv4/IPv6-adressen zijn op 10 september 2026 gecontroleerd. ProFTPD vereist hergebruik van de TLS-sessie voor de gegevensverbinding; `scripts/hosting.py` verzorgt dit.
+- Gecontroleerde webmap: `/domains/ijsbaannederbetuwe.nl/public_html`.
+- Het wachtwoord staat uitsluitend lokaal in `.deploy/ftp-login.dpapi`, versleuteld met Windows DPAPI voor deze Windows-gebruiker. Deze map wordt niet naar GitHub of de hosting geüpload. Invoer of vervanging kan met `python scripts/publish.py --save-login`; de invoer wordt niet getoond.
+- Reservekopieën: `.deploy/backups/`. Laatste publicatierapport: `.deploy/last-publish.json`.
+- Een reservekopie bevat alleen de vervangen websitebestanden en een bestandslijst. Terugzetten kan door de gewenste eerdere Git-versie als nieuwe commit te herstellen en opnieuw te publiceren. De publicatie verwijdert geen overige bestanden.
+- Op een andere pc of onder een andere Windows-gebruiker moeten de bestaande hostinggegevens eenmalig opnieuw worden opgeslagen. Schakel bij certificaatproblemen de controle niet uit; controleer de servernaam en de Windows-certificaatketen.
+
+De oorspronkelijke fotohero, indeling, lettertypen en teksten zijn bij de verhuizing behouden. De metadata verwijst naar het eigen domein; `.htaccess` stuurt HTTP en `www` door naar de HTTPS-versie zonder `www`.
 
 ## Inhoud aanpassen
 

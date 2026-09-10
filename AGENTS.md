@@ -2,7 +2,9 @@
 
 - Dit is een statische Nederlandstalige website voor IJsbaan Neder-Betuwe; gebruik geen backend voor simpele contentwijzigingen.
 - Houd de merknaam onafhankelijk van de locatie. De actieve editie is Opheusden 2026/2027, de volgende Kesteren 2027/2028. Andere locaties kunnen aan `dist/edition.js` worden toegevoegd.
-- Publicatie loopt via GitHub Pages vanuit `dist/`; alleen de websitebestanden worden gepubliceerd. `work/` is lokaal en genegeerd.
+- De primaire website is https://ijsbaannederbetuwe.nl/. Publiceer na een gevalideerde wijziging en Git-commit/push met `python scripts/publish.py --publish`; controleer de verse website en `site-version.json`. GitHub Pages blijft een automatische kopie vanuit `dist/`. Alleen websitebestanden worden gepubliceerd.
+- De bestaande hostinglogin is lokaal versleuteld opgeslagen in `.deploy/ftp-login.dpapi` (Windows DPAPI). Hergebruik `scripts/hosting.py` en `deploy.json`; vraag niet opnieuw om de verstrekte gegevens. De gecontroleerde FTPS-host is `vserver99.axc.eu`, poort 21, webmap `/domains/ijsbaannederbetuwe.nl/public_html`. De alias `ftp.ijsbaannederbetuwe.nl` heeft niet de certificaatnaam. Gebruik certificaatcontrole en TLS-sessiehergebruik; geen onversleutelde FTP of uitgeschakelde verificatie. Details staan in README.md.
+- `work/`, `.deploy/` en `__pycache__/` zijn lokaal en genegeerd. Upload alleen de gecommitte inhoud van `dist/`; laat andere hostingbestanden ongemoeid. Het publicatiescript maakt reservekopieën en controleert alle publieke bestanden via HTTPS. Behoud dit bij latere aanpassingen.
 - Houd bedragen, munten, contactgegevens en datums brongetrouw. Verzin geen openingstijden, ticketvoorwaarden, sponsoren of voorzieningen.
 - Sponsorcontact is een download met een mailto-link. Verstuur geen e-mail namens een bezoeker en suggereer niet dat een mailto-link al een aanmelding heeft ingediend.
 - Gebruik de bestaande GitHub CLI-aanmelding buiten de sandbox voor account `jerphaas`. Een fout van `gh auth status` binnen de Windows-sandbox bewijst niet dat het token ongeldig is; deze sessie is op 10 september 2026 buiten de sandbox gevalideerd. Geen tokens afdrukken of opslaan.
