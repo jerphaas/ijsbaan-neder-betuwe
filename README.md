@@ -36,6 +36,8 @@ De oorspronkelijke fotohero, indeling, lettertypen en teksten zijn bij de verhui
 
 ## Inhoud aanpassen
 
+Na een inhoudelijke wijziging: voer `node scripts/update_seo.mjs` en `python scripts/check_seo.py` uit vóór de commit. De titel, zoekomschrijving, deelvoorbeelden en gestructureerde gegevens gebruiken automatisch de actieve editie in `dist/edition.js`. Zowel publicatie naar de eigen hosting als GitHub Pages controleert deze gegevens vooraf.
+
 - `dist/edition.js`: actieve editie, datum, locatie en editieoverzicht. Voeg een object aan `editions` toe voor een nieuwe locatie.
 - `dist/index.html`: teksten, sponsorpakketten en algemene inhoud. Bij een jaarlijkse wissel ook editiegebonden copy, formulieren en metadata controleren.
 - `dist/styles.css`: vormgeving en responsive weergave.
@@ -48,6 +50,7 @@ De oorspronkelijke fotohero, indeling, lettertypen en teksten zijn bij de verhui
 - `dist/assets/icons.svg`: lokaal gehoste Lucide-iconen; de licentie staat in `dist/assets/LUCIDE-LICENSE.txt`.
 - `dist/assets/`: aangeleverde foto's en logo.
 - `dist/assets/schaatsmaatjes.png`: gegenereerde pinguïnillustratie, uitsluitend als klein decoratief accent op de bestaande fotokaart.
+- `dist/assets/*-<hash>.webp`: lichte afbeeldingen voor de website, met passende formaten voor mobiele schermen. De bestandsnaam bevat een inhoudshash zodat lang cachen veilig blijft. Bronfoto's blijven intact. Opnieuw maken kan met `python scripts/optimize_images.py` (Pillow), gevolgd door `node scripts/update_seo.mjs`.
 - `dist/downloads/`: het originele, digitaal invulbare sponsorformulier.
 
 De startdatum is 11 december 2026. De Wordbrief vermeldt 3 januari 2027 als einddatum; het PDF-sponsorformulier vermeldt 2 januari 2027. Tot bevestiging staat `end: null` en communiceert de website alleen de startdatum. Het gedownloade bronformulier blijft ongewijzigd.
@@ -67,3 +70,18 @@ Open vervolgens `http://localhost:4173`.
 ## Bronnen
 
 Inhoud en prijzen zijn overgenomen uit de door de opdrachtgever aangeleverde sponsorbrief en het sponsorformulier van 2026. De foto's en het logo zijn door de opdrachtgever aangeleverd. Het ontwerp en de website voegen geen rechten toe aan deze assets.
+
+## SEO en Google
+
+- De canonieke URL is `https://ijsbaannederbetuwe.nl/`. HTTP, `www` en `/index.html` sturen door naar die URL. De GitHub Pages-kopie verwijst er via de canonical naar.
+- `robots.txt` staat crawlen toe en verwijst naar `sitemap.xml`. De sitemap bevat de echte startpagina en drie inhoudelijke afbeeldingen; ankers, de foutpagina en technische bestanden horen er niet in. Er wordt geen kunstmatige versheidsdatum gegenereerd.
+- Alle inhoudelijke afbeeldingen hebben beschrijvende Nederlandse alt-teksten. De decoratieve pinguïns, sneeuw en iconen worden bewust overgeslagen door schermlezers.
+- De statische JSON-LD beschrijft de organisatie, website en pagina. Het betreft geen nieuwe juridische entiteit. Er zijn geen verzonnen beoordelingen, openingstijden of zoektermen toegevoegd. Event-markup volgt pas wanneer de einddatum en evenementgegevens bevestigd zijn; een meerdaags evenement zonder einddatum kan verkeerde informatie opleveren.
+- Titels en beschrijvingen zijn ook beschikbaar voor gedeelde links via Open Graph en Twitter Cards. De content, navigatie en belangrijkste bezoekinformatie staan in de HTML; er is geen JavaScript nodig om die te lezen.
+- Tekstbestanden worden gecomprimeerd en opnieuw gevalideerd; afbeeldingen met een inhoudshash mogen langdurig gecachet worden. De gebruikte afbeeldingen daalden bij de optimalisatie van circa 2,73 MB naar 0,42 MB op de grootste formaten. Dit is bestandsoverdracht, geen gemeten Core Web Vitals-score.
+- `404.html` krijgt bij een ontbrekende URL de echte HTTP-status 404. De foutpagina, het technische versiebestand en het Google-verificatiebestand zijn niet bedoeld als zoekresultaat.
+- Het aangeleverde bestand `google4244cf326cd58185.html` staat ongewijzigd in de hoofdmap. **Behoud dit bestand bij alle toekomstige publicaties**, ook na een geslaagde eigendomscontrole.
+- In Google Search Console: verifieer de URL-prefix-property `https://ijsbaannederbetuwe.nl/` met het HTML-bestand, dien `sitemap.xml` in en inspecteer de startpagina. Controleer daar later indexering, zoektermen en Core Web Vitals. Een geüpload verificatiebestand alleen bewijst niet dat Google de eigendomscontrole of sitemapaanmelding heeft afgerond.
+- Controleer lokaal met `python scripts/check_seo.py`; controleer na publicatie ook met `python scripts/check_seo.py --live`. De gewone publicatiecontrole vergelijkt daarnaast alle online bestanden met de commit.
+
+Gebaseerd op de officiële [SEO-startgids van Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide), [sitemaprichtlijnen](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [site-naamgegevens](https://developers.google.com/search/docs/appearance/site-names) en [evenementrichtlijnen](https://developers.google.com/search/docs/appearance/structured-data/event). Indexering en posities worden door Google bepaald; een technische controle garandeert geen ranking of uitgebreid zoekresultaat.

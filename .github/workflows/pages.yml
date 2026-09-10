@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Controleer SEO en crawlbare inhoud
+        run: python scripts/check_seo.py
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload website

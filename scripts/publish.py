@@ -23,6 +23,9 @@ def digest(data):
 
 
 def snapshot():
+    # Do not publish stale metadata after an edition or asset change.
+    from check_seo import validate
+    validate()
     if git('status', '--porcelain', '--untracked-files=all', '--', 'dist').strip():
         raise RuntimeError('Sla wijzigingen in dist/ eerst op met een Git-commit.')
     files = {}
