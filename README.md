@@ -13,6 +13,7 @@ De complete statische website staat in `dist/`. GitHub Pages publiceert deze map
 - `dist/edition.js`: actieve editie, datum, locatie en editieoverzicht. Voeg een object aan `editions` toe voor een nieuwe locatie.
 - `dist/index.html`: teksten, sponsorpakketten en algemene inhoud. Bij een jaarlijkse wissel ook editiegebonden copy, formulieren en metadata controleren.
 - `dist/styles.css`: vormgeving en responsive weergave.
+- `dist/winter-play.css`: speelse winterstijl met Caveat-handlettering, fotokaarten, kleuraccenten en compacte sponsortickets. De hoverbewegingen respecteren de voorkeur voor minder beweging.
 - `dist/app.js`: navigatie, sponsordialoog en agendadownload.
 - `dist/schedule.js` en `dist/schedule.css`: openingstijden per periode. De tijden, vakantie en sluitingsdagen staan per editie in `openingHours` in `dist/edition.js`.
 - `dist/motion.css` en `dist/motion.js`: eenmalige introductie, scrollanimaties en hoverreacties. Respecteert `prefers-reduced-motion`, behoudt toetsenbordbediening en printweergave, en laat alle inhoud zien zonder JavaScript.
