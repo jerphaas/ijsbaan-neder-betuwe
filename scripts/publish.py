@@ -65,7 +65,7 @@ def live_file(name, nonce):
 
 def verify(files):
     nonce = uuid4().hex
-    names = [name for name in files if not name.startswith('.')]
+    names = [name for name in files if not name.startswith('.') and not name.endswith('.php')]
     def check(name):
         if digest(live_file(name, nonce)) != digest(files[name]):
             raise RuntimeError('Online bestand wijkt af van de commit: ' + name)
@@ -107,6 +107,8 @@ def upload(ftp, name, content, token):
 
 
 def publish(commit, files):
+    import deploy_sponsor
+    server_files = deploy_sponsor.snapshot()
     root = CONFIG['remoteRoot']
     if root != '/domains/ijsbaannederbetuwe.nl/public_html':
         raise RuntimeError('De gecontroleerde webmap is gewijzigd; eerst opnieuw inspecteren.')
@@ -152,8 +154,11 @@ def publish(commit, files):
                     raise RuntimeError('Doelmap is geen gewone map: ' + folder)
             else:
                 ftp.mkd(folder)
+        deploy_sponsor.deploy(ftp, commit, server_files, backup, token)
         # Each file is checked before rename; publish the entry page last.
         for name in sorted(files, key=lambda n: (n == 'index.html', n == '.htaccess', n)):
+            if name == 'index.html':
+                deploy_sponsor.activate(ftp, commit, token)
             upload(ftp, name, files[name], token)
             print('Geplaatst:', name, flush=True)
         verify(files)
@@ -194,6 +199,10 @@ def main():
             publish(commit, files)
         else:
             verify(files)
+            from sponsor_admin import action
+            health = action('health')
+            if health['commit'] != commit or not health['enabled']:
+                raise RuntimeError('De sponsorbackend loopt achter op de commit.')
         return
     parser.error('Kies --publish, --check, --inspect of --save-login.')
 

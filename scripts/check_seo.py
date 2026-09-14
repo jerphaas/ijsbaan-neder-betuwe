@@ -48,7 +48,10 @@ def validate():
     for name in ('og:image', 'og:image:alt', 'twitter:card', 'twitter:image:alt'):
         assert meta(name)
     assert [a['href'] for t,a in elements if t == 'link' and a.get('rel') == 'canonical'] == [BASE]
-    images = [a for t,a in elements if t == 'img']
+    images = [a for t,a in elements if t == 'img' and a.get('id') != 'logo-preview']
+    previews = [a for t,a in elements if t == 'img' and a.get('id') == 'logo-preview']
+    if previews:
+        assert len(previews) == 1 and 'src' not in previews[0] and 'hidden' in previews[0] and previews[0]['alt']
     for image in images:
         assert 'alt' in image, 'Afbeelding mist alt-attribuut.'
         assert image['alt'] or image.get('aria-hidden') == 'true', 'Inhoudelijke afbeelding mist alt-tekst.'

@@ -16,7 +16,7 @@ De complete statische website staat in `dist/`. Er is geen build, CMS of install
 2. Sla de wijziging op met een Git-commit en push naar `main`.
 3. Dubbelklik op `publiceer.cmd`, of voer `python scripts/publish.py --publish` uit.
 
-De publicatieknop zet de **laatste lokale commit** online. Niet-gecommitte wijzigingen in `dist/` worden tegengehouden. Na een wijziging via de GitHub-website moet deze lokale map dus eerst worden bijgewerkt met `git pull --ff-only`. Alleen bestanden uit `dist/` gaan naar de webmap. Andere bestanden op de hosting worden behouden. Elk te vervangen bestand krijgt vooraf een lokale reservekopie; de startpagina wordt als laatste geplaatst. Daarna vergelijkt het script de openbare website en alle publieke bestanden met de commit.
+De publicatieknop zet de **laatste lokale commit** online. Niet-gecommitte wijzigingen in `dist/` en `server/` worden tegengehouden. Na een wijziging via de GitHub-website moet deze lokale map dus eerst worden bijgewerkt met `git pull --ff-only`. Bestanden uit `dist/` gaan naar de webmap; `server/` gaat naar de afgeschermde map `sponsor-private/app/`. Andere bestanden op de hosting worden behouden. Elk te vervangen bestand krijgt vooraf een lokale reservekopie; de startpagina wordt als laatste geplaatst. Daarna vergelijkt het script de openbare statische bestanden met de commit; PHP wordt via FTPS gecontroleerd en de actieve backend via een beveiligde gezondheidscontrole.
 
 `python scripts/publish.py --check` controleert de online bestanden zonder iets te wijzigen. De geplaatste versie staat ook op `https://ijsbaannederbetuwe.nl/site-version.json`.
 
@@ -42,7 +42,7 @@ Na een inhoudelijke wijziging: voer `node scripts/update_seo.mjs` en `python scr
 - `dist/index.html`: teksten, sponsorpakketten en algemene inhoud. Bij een jaarlijkse wissel ook editiegebonden copy, formulieren en metadata controleren.
 - `dist/styles.css`: vormgeving en responsive weergave.
 - `dist/winter-play.css`: speelse winterstijl met Caveat-handlettering, fotokaarten, kleuraccenten en compacte sponsortickets. De hoverbewegingen respecteren de voorkeur voor minder beweging.
-- `dist/app.js`: navigatie, sponsordialoog en agendadownload.
+- `dist/app.js`: navigatie en agendadownload. `dist/sponsor.js` en `dist/sponsor.css`: sponsormodal, formulier en logo-preview.
 - `dist/schedule.js` en `dist/schedule.css`: openingstijden per periode. De tijden, vakantie en sluitingsdagen staan per editie in `openingHours` in `dist/edition.js`.
 - `dist/motion.css` en `dist/motion.js`: eenmalige introductie, scrollanimaties en hoverreacties. Respecteert `prefers-reduced-motion`, behoudt toetsenbordbediening en printweergave, en laat alle inhoud zien zonder JavaScript.
 - `dist/snow.js`: subtiele, pauzeerbare sneeuw in de hero. Minder vlokken op mobiel; pauzeert buiten beeld en in een verborgen tab; uit bij `prefers-reduced-motion`.
@@ -55,7 +55,7 @@ Na een inhoudelijke wijziging: voer `node scripts/update_seo.mjs` en `python scr
 
 De startdatum is 11 december 2026. De Wordbrief vermeldt 3 januari 2027 als einddatum; het PDF-sponsorformulier vermeldt 2 januari 2027. Tot bevestiging staat `end: null` en communiceert de website alleen de startdatum. Het gedownloade bronformulier blijft ongewijzigd.
 
-Er worden geen bezoekersgegevens opgeslagen en geen berichten automatisch verzonden. Sponsorcontact opent de e-mailapp van de bezoeker; het PDF-formulier moet de bezoeker zelf invullen en bijvoegen.
+Op verzoek van 14 september 2026 slaat het sponsorformulier aanvragen op in MySQL en stuurt het e-mails naar Ton en de sponsor. Het originele PDF-bestand blijft als bron aanwezig; bezoekers hoeven het niet meer in te vullen.
 
 Het voorlopige rooster is op 10 september 2026 overgenomen van het patroon op de aangeleverde historische poster, met toestemming van de opdrachtgever. Schooldagen: 15.00–20.00 uur; zaterdag en kerstvakantie: 10.00–20.00 uur. Zondagen, maandagen, beide kerstdagen en nieuwjaarsdag zijn gesloten. De opdrachtgever bevestigde desgevraagd dat ook de maandagen dicht blijven. De kerstvakantie loopt van 19 december 2026 tot en met 3 januari 2027, volgens de [Rijksoverheid](https://www.rijksoverheid.nl/themas/onderwijs/schoolvakanties/kerstvakantie/kerstvakantie-2026). Het getoonde rooster omvat 11 december t/m 3 januari; die laatste dag is zondag en gesloten. `through` is het einde van het rooster, geen bevestiging van de nog onduidelijke officiële einddatum. Het originele sponsorformulier blijft ongewijzigd.
 
@@ -85,3 +85,22 @@ Inhoud en prijzen zijn overgenomen uit de door de opdrachtgever aangeleverde spo
 - Controleer lokaal met `python scripts/check_seo.py`; controleer na publicatie ook met `python scripts/check_seo.py --live`. De gewone publicatiecontrole vergelijkt daarnaast alle online bestanden met de commit.
 
 Gebaseerd op de officiële [SEO-startgids van Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide), [sitemaprichtlijnen](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [site-naamgegevens](https://developers.google.com/search/docs/appearance/site-names) en [evenementrichtlijnen](https://developers.google.com/search/docs/appearance/structured-data/event). Indexering en posities worden door Google bepaald; een technische controle garandeert geen ranking of uitgebreid zoekresultaat.
+
+## Sponsoraanvragen beheren
+
+Het formulier vraagt pakket, bedrijf/organisatie, contactpersoon en e-mailadres. Telefoon, opmerkingen en logo zijn optioneel. Na opslag krijgt elke aanvraag een unieke `IJS-...`-referentie; Ton ontvangt de gegevens met het logo als bijlage, de sponsor ontvangt een ontvangstbevestiging. Beide mails komen van `info@ijsbaannederbetuwe.nl`; antwoorden gaan naar Ton of de sponsor. Er wordt niets betaald of definitief geboekt.
+
+- Publieke ingang: `dist/api/sponsor.php`. Privé-app: `server/bootstrap.php`, `server/mail.php`, `server/schema.sql` en `server/catalog.json`. PHPMailer 7.1.1 komt uit de officiële release, met licentie en bestandshashes in `server/vendor/phpmailer/`.
+- Pakket- of editiewijziging: pas `dist/edition.js` aan, draai `node scripts/update_sponsor_catalog.mjs`, daarna de bestaande SEO-controles. Bedragen en voordelen in een binnengekomen aanvraag blijven als momentopname bewaard.
+- Hosting: PHP 8.5.6 op 14 september 2026 gecontroleerd na verhoging via het open DirectAdmin-tabblad. Benodigde extensies: PDO/MySQL, GD, fileinfo, mbstring, OpenSSL. Uploadgrens hosting 2 MB, POST 8 MB.
+- De bestaande MySQL-database wordt lokaal op de hosting benaderd. Tabellen: `sponsor_applications`, `sponsor_mail`, `sponsor_rate_limits`. Migratie maakt uitsluitend deze tabellen aan als ze nog ontbreken; geen verwijderingen.
+- Secrets: lokaal Windows DPAPI `.deploy/sponsor-secrets.dpapi`; remote `/domains/ijsbaannederbetuwe.nl/sponsor-private/config.json` (600), map 700. Hergebruik `scripts/sponsor_admin.py`; geen secrets in argumenten, browser of Git. De `enabled`-schakelaar onderbreekt nieuwe aanvragen zonder gegevens te verwijderen.
+- Uploads: dezelfde privémap, submap `uploads/`, willekeurige namen, rechten 600. Alleen echte PNG/JPEG/WebP tot 2 MB, maximaal 12 megapixels en 6.000 pixels per zijde. GD decodeert en schrijft een nieuwe PNG zonder oorspronkelijke metadata of bestandsnaam. Geen SVG/PDF/uitvoerbare uploads. De upload is geen openbaar downloadbestand.
+- Bescherming: HTTPS, exacte origincontrole, ondertekend formuliertoken (2 uur), honeypot, invoervalidatie, PDO-parameters, limieten per IP en e-mailadres en unieke aanvraagtoken. Rate-limit-identiteiten worden HMAC-gehasht en verlopen na 2 uur; de webserver kan eigen toegangslogs bijhouden. Aanvragen en logo’s worden bewaard voor afhandeling; verwijderverzoeken lopen via Ton.
+- Toestemming in het formulier geldt uitsluitend voor de sponsoraanvraag en communicatie daarover; er wordt geen marketinginschrijving aangemaakt.
+- Mailstatus per ontvanger: `pending`, `sending`, `sent` of `uncertain`. `sent` betekent dat SMTP het bericht heeft aangenomen, niet dat het gelezen is. Tijdelijke connectie-/authenticatiefouten blijven `pending`; opgeslagen aanvragen blijven behouden.
+- Onderhoud: `python scripts/sponsor_admin.py health` toont actuele commit, aantallen en nog niet verzonden berichten zonder persoonsgegevens. `python scripts/sponsor_admin.py retry --reference IJS-...` probeert alleen pending-berichten van die aanvraag opnieuw (maximaal 5 pogingen per ontvanger). Reeds verstuurde mails worden overgeslagen.
+- Bij een onderbreking tijdens/na SMTP DATA blijft de status `uncertain`; een afgebroken proces kan `sending` achterlaten. Niet blind opnieuw verzenden: controleer eerst de mailserverlogs met het deterministische Message-ID `<ijs-... .organizer/sponsor@ijsbaannederbetuwe.nl>` (zonder spatie). Er is geen automatische achtergrondtaak ingesteld; controleer pending-mails met de beheeropdracht.
+- De deploy bewaart de vorige privébronbestanden, behoudt config/uploads/aanvragen, controleert uploads en schema en plaatst de nieuwe homepage als laatste. `site-version.json` en beveiligde backendhealth moeten dezelfde commit tonen.
+- GitHub Pages blijft een statische kopie zonder `api/`; de pakketlinks openen het formulier op het eigen domein. Een lokale `http.server`-preview kan het uiterlijk tonen, maar aanvraagverwerking vereist de eigen PHP-hosting.
+- Technische verzendproeven gebruiken de eigen mailbox als sponsoradres, worden gemarkeerd `is_test=1` en hebben onderwerp `[TECHNISCHE TEST]`. Ton krijgt expliciet te zien dat er niets te verwerken of factureren is.

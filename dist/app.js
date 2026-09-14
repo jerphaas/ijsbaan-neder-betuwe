@@ -54,28 +54,6 @@
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && !mobileNav.hidden) { closeMenu(); menuButton.focus(); } });
   matchMedia('(min-width: 951px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
-  const dialog = document.getElementById('sponsor-dialog');
-  document.querySelectorAll('[data-package]').forEach(link => link.addEventListener('click', event => {
-    if (typeof dialog.showModal !== 'function') return;
-    event.preventDefault();
-    const amount = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(link.dataset.package));
-    document.getElementById('selected-package').textContent = `Jouw keuze: sponsorpakket van ${amount}`;
-    const selected = config.sponsorPackages[link.dataset.package];
-    document.getElementById('package-includes').replaceChildren(...selected.benefits.map(text => {
-      const item = document.createElement('li');
-      const label = document.createElement('span');
-      label.textContent = text;
-      item.append(icon('check'), label);
-      return item;
-    }));
-    const subject = `Sponsoring IJsbaan ${edition.place} ${edition.season} – ${amount}`;
-    const body = `Beste Ton,\n\nGraag dragen wij bij met het sponsorpakket van ${amount}.\n\nBedrijfsnaam:\nContactpersoon:\nTelefoon:\n\nHet ingevulde sponsorformulier voegen wij als bijlage toe.\n\nMet vriendelijke groet,\n`;
-    document.getElementById('sponsor-email').href = `mailto:${config.contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    dialog.showModal();
-  }));
-  dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
-
   document.getElementById('calendar-download').addEventListener('click', () => {
     if (!edition.start) return;
     const nextDay = new Date(`${edition.start}T12:00:00Z`); nextDay.setUTCDate(nextDay.getUTCDate() + 1);

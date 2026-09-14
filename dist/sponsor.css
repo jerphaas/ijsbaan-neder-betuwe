@@ -1,0 +1,58 @@
+/* The existing winter design continues inside a compact, accessible application form. */
+body.sponsor-modal-open{overflow:hidden}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#sponsor-dialog{width:min(700px,calc(100% - 24px));max-width:700px;max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:24px;background:#fffdf8;color:#193e32;overscroll-behavior:contain}
+#sponsor-dialog::backdrop{background:rgba(10,37,29,.7);backdrop-filter:blur(5px)}
+#sponsor-dialog .dialog-inner{padding:34px 38px 30px;position:relative}
+#sponsor-dialog .dialog-close{position:absolute;top:16px;right:16px;z-index:2;width:40px;height:40px;display:grid;place-items:center;background:#eaf0e9;border:0;border-radius:50%;color:#104a38;cursor:pointer}
+#sponsor-dialog h2{font-size:37px;line-height:1.12;letter-spacing:-1.4px;margin:12px 0 10px}
+#sponsor-dialog .eyebrow{font-size:10px;margin-right:35px;letter-spacing:1.6px}
+.sponsor-lead{font-size:14px;line-height:1.65;max-width:530px;margin:0 0 22px;color:#53665d}
+#sponsor-form fieldset{border:0;padding:0;margin:0;min-width:0}
+.sponsor-fields{display:grid;grid-template-columns:1fr 1fr;gap:15px 18px}
+.sponsor-field{display:flex;flex-direction:column;min-width:0;gap:6px;font-size:12px;font-weight:700}
+.sponsor-field-wide{grid-column:1/-1}
+.sponsor-field label span,.upload-label span{font-weight:400;color:#65776d}
+.sponsor-field input,.sponsor-field textarea,.sponsor-field select{width:100%;min-width:0;box-sizing:border-box;border:1px solid #ccd7cb;border-radius:10px;background:white;color:#193e32;padding:12px 13px;font:400 16px/1.35 inherit;font-family:inherit;font-size:16px;font-weight:400;outline-offset:3px}
+.sponsor-field input:focus,.sponsor-field textarea:focus,.sponsor-field select:focus{outline:2px solid #367d63;border-color:transparent}
+.sponsor-field textarea{resize:vertical;min-height:76px;font-size:14px}
+.sponsor-field [aria-invalid=true]{border-color:#b43e26;background:#fff8f5}
+.field-error{color:#a3311d;font-size:12px;font-weight:500;line-height:1.5}
+.field-error:empty{display:none}
+.sponsor-package{background:#edf2e9;border:1px solid #dfe7d9;border-radius:15px;padding:16px;margin-bottom:20px}
+.sponsor-package select{border-color:#bed0be;font-weight:700;background:#fffdf8}
+#sponsor-edition{display:block;font-size:11px;font-weight:600;letter-spacing:.4px;color:#637564;margin-bottom:10px}
+.sponsor-package details{margin-top:12px}
+.sponsor-package summary{font-size:12px;font-weight:600;cursor:pointer;list-style-position:inside;line-height:1.5}
+#sponsor-dialog .package-includes{display:block;margin:12px 0 0;padding-left:18px;font-size:12px;line-height:1.65}
+#sponsor-dialog .package-includes li{display:list-item;padding-left:2px;margin-bottom:6px}
+.sponsor-upload{grid-column:1/-1;border:1.5px dashed #b7c9b6;background:#f4f6ef;border-radius:13px;padding:14px}
+.upload-label{font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.upload-label .icon{width:18px;height:18px;color:#b96631}
+.upload-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.upload-controls input{max-width:100%;font:12px inherit;color:#53665d;width:100%}
+.upload-controls input::file-selector-button{border:0;border-radius:8px;padding:10px 13px;margin-right:10px;background:#104a38;color:white;font:600 12px inherit;cursor:pointer}
+#logo-preview{width:64px;height:56px;object-fit:contain;background:white;border-radius:7px;border:1px solid #dce5d8}
+#logo-filename{display:block;font-size:11px;overflow-wrap:anywhere;color:#607164;margin-top:8px}
+#logo-remove{border:0;background:none;text-decoration:underline;font:600 12px inherit;color:#526358;cursor:pointer;padding:6px}
+.sponsor-privacy{display:flex;align-items:flex-start;gap:9px;font-size:11px;line-height:1.65;color:#53665d;margin:16px 0 0}
+.sponsor-privacy input{accent-color:#104a38;width:17px;height:17px;flex:none;margin-top:2px}
+.sponsor-privacy a{color:#104a38;text-underline-offset:2px}
+.sponsor-submit-row{margin-top:18px}
+#sponsor-submit{width:100%;justify-content:center;font-size:13px;min-height:48px;border:0;cursor:pointer;gap:12px}
+#sponsor-submit:disabled{opacity:.65;cursor:wait}
+#sponsor-submit span{font-size:13px;line-height:1.4}
+.sponsor-smallprint{font-size:11px;line-height:1.6;color:#6b776e;margin:10px 0 0;text-align:center}
+#sponsor-status{font-size:13px;color:#954329;line-height:1.6;margin:12px 0 0;outline-offset:3px}
+#sponsor-status:empty{display:none}
+.sponsor-trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+#sponsor-success{text-align:center;padding:36px 0 20px}
+.success-icon{display:grid;place-items:center;width:66px;height:66px;border-radius:50%;background:#e5efdf;color:#104a38;margin:0 auto 22px}
+.success-icon .icon{width:32px;height:32px}
+#sponsor-success p{font-size:14px;line-height:1.7;color:#53665d}
+.reference-tag{display:inline-block;border:1px dashed #b3c7ab;background:#edf2e9;border-radius:10px;padding:10px 18px;margin:8px 0 14px}
+#sponsor-success .button{margin-top:14px;cursor:pointer;border:0}
+#sponsor-dialog [hidden]{display:none!important}
+#dialog-title:focus,#success-title:focus{outline:none}
+@media(max-width:540px){#sponsor-dialog{border-radius:19px;max-height:calc(100dvh - 20px)}#sponsor-dialog .dialog-inner{padding:30px 20px 23px}#sponsor-dialog h2{font-size:31px}.sponsor-fields{grid-template-columns:1fr;gap:13px}.sponsor-field-wide{grid-column:auto}.sponsor-lead{font-size:13px}.sponsor-package{padding:13px}.sponsor-privacy{font-size:11px}.sponsor-submit-row{margin-top:14px}}
+@media(prefers-reduced-motion:no-preference){#sponsor-dialog[open]{animation:sponsor-arrive .22s ease-out}@keyframes sponsor-arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}}
