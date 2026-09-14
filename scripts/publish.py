@@ -1,6 +1,7 @@
 """Publish the committed dist/ snapshot; keep credentials and backups local."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import ExitStack
 from datetime import datetime, timezone
 import getpass
 import hashlib
@@ -136,7 +137,15 @@ def publish(commit, files):
     folders = {'.'}
     for name in files:
         folders.update(str(p) for p in PurePosixPath(name).parents)
-    with connect() as ftp:
+    with ExitStack() as connections:
+        ftp = connections.enter_context(connect())
+        def reconnect():
+            nonlocal ftp
+            ftp.close()
+            ftp = connections.enter_context(connect())
+            ftp.cwd(root)
+            if ftp.pwd() != root:
+                raise RuntimeError('Onverwachte webmap na vernieuwen van de FTPS-verbinding.')
         ftp.cwd(root)
         if ftp.pwd() != root:
             raise RuntimeError('De FTP-server heeft een onverwachte webmap gekozen.')
@@ -147,7 +156,9 @@ def publish(commit, files):
         if digest(static_home(previous_index)) != digest(static_home(live_file('index.html', token))):
             raise RuntimeError('FTP-webmap en openbaar domein tonen verschillende index.html-bestanden.')
         saved = []
-        for name in [*files, 'site-version.json']:
+        for index, name in enumerate([*files, 'site-version.json']):
+            if index and index % 20 == 0:
+                reconnect()
             facts = inventory.get(name)
             if not facts:
                 continue
@@ -171,9 +182,13 @@ def publish(commit, files):
                     raise RuntimeError('Doelmap is geen gewone map: ' + folder)
             else:
                 ftp.mkd(folder)
+        reconnect()
         deploy_sponsor.deploy(ftp, commit, server_files, backup, token)
+        reconnect()
         # Each file is checked before rename; publish the entry page last.
-        for name in sorted(files, key=lambda n: (n == 'index.html', n == '.htaccess', n)):
+        for index, name in enumerate(sorted(files, key=lambda n: (n == 'index.html', n == '.htaccess', n))):
+            if index and index % 20 == 0:
+                reconnect()
             if name == 'index.html':
                 deploy_sponsor.activate(ftp, commit, token)
             upload(ftp, name, files[name], token)
