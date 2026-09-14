@@ -167,6 +167,10 @@ function sponsor_route(): void {
 }
 function sponsor_maintenance(string $action): void {
     $db = sponsor_db();
+    if ($action === 'admin-link') {
+        require_once __DIR__ . '/admin.php';
+        sponsor_json(['ok' => true, 'ticket' => sponsor_admin_ticket(), 'expiresIn' => 300]);
+    }
     if ($action === 'migrate') {
         if ($db->query('SELECT DATABASE()')->fetchColumn() !== sponsor_config()['db']['name']) throw new RuntimeException('Wrong database');
         foreach (explode(';', file_get_contents(__DIR__ . '/schema.sql')) as $statement) {

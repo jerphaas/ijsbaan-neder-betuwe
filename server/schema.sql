@@ -14,6 +14,19 @@ CREATE TABLE IF NOT EXISTS sponsor_applications (
   logo_file VARCHAR(80) NULL,
   is_test TINYINT(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS sponsor_admin_tickets (
+  token_hash CHAR(64) PRIMARY KEY,
+  created_at DATETIME NOT NULL,
+  expires_at DATETIME NOT NULL,
+  used_at DATETIME NULL,
+  KEY expiry (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS sponsor_admin_devices (
+  token_hash CHAR(64) PRIMARY KEY,
+  created_at DATETIME NOT NULL,
+  expires_at DATETIME NOT NULL,
+  KEY expiry (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS sponsor_mail (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   application_id BIGINT UNSIGNED NOT NULL,

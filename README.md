@@ -105,3 +105,15 @@ Het formulier vraagt pakket, bedrijf/organisatie, contactpersoon en e-mailadres.
 - De deploy bewaart de vorige privébronbestanden, behoudt config/uploads/aanvragen, controleert uploads en schema en plaatst de nieuwe homepage als laatste. `site-version.json` en beveiligde backendhealth moeten dezelfde commit tonen.
 - GitHub Pages blijft een statische kopie zonder `api/`; de pakketlinks openen het formulier op het eigen domein. Een lokale `http.server`-preview kan het uiterlijk tonen, maar aanvraagverwerking vereist de eigen PHP-hosting.
 - Technische verzendproeven gebruiken de eigen mailbox als sponsoradres, worden gemarkeerd `is_test=1` en hebben onderwerp `[TECHNISCHE TEST]`. Ton krijgt expliciet te zien dat er niets te verwerken of factureren is.
+
+## Bedrijven en aanvragen bekijken
+
+De vaste beheerlink is **https://ijsbaannederbetuwe.nl/beheer/**. Het overzicht toont bedrijven, contactgegevens, pakketkeuze, aanvraagdatum, mailstatus en logo-download. Zoek op bedrijf, contact, e-mail of referentie; filter op editie en pakket. De CSV-download bevat alle resultaten binnen de gekozen filters. Testaanvragen staan apart en tellen niet mee in echte aantallen/bedragen. Dit is een overzicht van aanvragen, niet van geaccepteerde contracten of betalingen.
+
+Dubbelklik op **Open sponsorbeheer.cmd** in deze projectmap. Deze opener gebruikt de bestaande Windows-DPAPI-toegang en logt in via een eenmalig ticket van vijf minuten. Er worden geen nieuwe blijvende wachtwoorden aangemaakt en geen hosting-, database- of mailwachtwoorden naar de browser gestuurd. Alleen het eenmalige ticket gaat naar de browser, in het URL-fragment; de pagina verwijdert dat direct. De vaste link kan vervolgens als bladwijzer worden opgeslagen.
+
+De browser wordt maximaal 30 dagen herkend via een apart, gehasht en bij sessieherstel roterend token. Gewone PHP-sessies verlopen na 8 uur of 2 uur inactiviteit. Uitloggen trekt de huidige browsertoegang in. Opnieuw inloggen kan met hetzelfde cmd-bestand op deze pc. De opener is gekoppeld aan de lokale Windows-gebruiker en diens opgeslagen toegang; het cmd-bestand alleen geeft op een andere pc geen toegang.
+
+Bronnen: `server/admin.php`, `server/admin_views.php`, `dist/beheer/` en `scripts/open_sponsor_admin.py`. Alleen geauthenticeerde gebruikers kunnen aanvragen, details, CSV en logo’s ophalen. Het beheer stuurt geen mails en wijzigt geen sponsorregistraties. Er is geen publieke herbruikbare geheime URL. De map `beheer/` wordt niet gepubliceerd op GitHub Pages; gebruik het eigen domein.
+
+Controle na relevante wijzigingen: `python scripts/check_sponsor_admin.py`. Die test anonieme afscherming, tijdelijke tickets, cookie-eigenschappen, zoeken, CSV, logotoegang, sessieherstel en uitloggen op de werkelijke hosting, zonder nieuwe aanvragen of mail te maken. Tabellen `sponsor_admin_tickets` en `sponsor_admin_devices` bevatten alleen hashes van toegangstokens en hun termijnen; sessies staan in `sponsor-private/sessions/`. CSV-velden worden als tekst beschermd tegen formule-injectie.

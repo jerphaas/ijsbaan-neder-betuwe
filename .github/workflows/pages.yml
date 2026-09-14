@@ -30,7 +30,7 @@ jobs:
       - name: Maak statische kopie zonder PHP
         run: |
           mkdir pages-dist
-          rsync -a --exclude='api/' dist/ pages-dist/
+          rsync -a --exclude='api/' --exclude='beheer/' dist/ pages-dist/
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload website
