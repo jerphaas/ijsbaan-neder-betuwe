@@ -47,6 +47,7 @@ Na een inhoudelijke wijziging: voer `node scripts/update_seo.mjs` en `python scr
 - `dist/motion.css` en `dist/motion.js`: eenmalige introductie, scrollanimaties en hoverreacties. Respecteert `prefers-reduced-motion`, behoudt toetsenbordbediening en printweergave, en laat alle inhoud zien zonder JavaScript.
 - `dist/snow.js`: subtiele, pauzeerbare sneeuw in de hero. Minder vlokken op mobiel; pauzeert buiten beeld en in een verborgen tab; uit bij `prefers-reduced-motion`.
 - `dist/edition.js` bevat ook de volledige sponsorpakketdetails die in het keuzevenster verschijnen.
+- De knop **Vergelijk de pakketten** opent een vergelijking: zes pakketten op desktop, twee vrij te kiezen pakketten tot 1.000 px. De tabel gebruikt `sponsorComparison` in `dist/edition.js` en haalt muntaantallen uit `sponsorPackages`. Controleer bij een pakketwijziging beide beschrijvingen. Een streepje betekent niet vermeld; hogere pakketten erven niet automatisch alle eerdere voordelen. Vanuit de tabel opent **Kies pakket** het aanvraagformulier; al ingevulde gegevens blijven behouden bij vergelijken vanuit dat formulier.
 - `dist/assets/icons.svg`: lokaal gehoste Lucide-iconen; de licentie staat in `dist/assets/LUCIDE-LICENSE.txt`.
 - `dist/assets/`: aangeleverde foto's en logo.
 - `dist/assets/schaatsmaatjes.png`: gegenereerde pinguïnillustratie, uitsluitend als klein decoratief accent op de bestaande fotokaart.

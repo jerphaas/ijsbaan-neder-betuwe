@@ -4,6 +4,7 @@
   const config = window.IJSBAAN;
   const edition = config.editions.find(item => item.id === config.activeEdition);
   const dialog = document.getElementById('sponsor-dialog');
+  const compareDialog = document.getElementById('compare-dialog');
   const form = document.getElementById('sponsor-form');
   const select = form.elements.package;
   const status = document.getElementById('sponsor-status');
@@ -68,7 +69,7 @@
     form.elements.edition.value = edition.id;
     updatePackage(); clearErrors();
     form.hidden = false; success.hidden = true; intro.hidden = false;
-    dialog.showModal();
+    if (!dialog.open) dialog.showModal();
     document.body.classList.add('sponsor-modal-open');
     dialog.scrollTop = 0;
     document.getElementById('dialog-title').focus();
@@ -78,7 +79,7 @@
     event.preventDefault(); open(link.dataset.package, link);
   }));
   dialog.querySelectorAll('[data-close-sponsor]').forEach(el => el.addEventListener('click', () => dialog.close()));
-  dialog.addEventListener('close', () => { document.body.classList.remove('sponsor-modal-open'); opener?.focus(); });
+  dialog.addEventListener('close', () => { if (!compareDialog.open) document.body.classList.remove('sponsor-modal-open'); opener?.focus(); });
   dialog.addEventListener('click', event => {
     if (event.target !== dialog || sending) return;
     const rect = dialog.getBoundingClientRect();
@@ -140,6 +141,108 @@
       dialog.querySelector('.dialog-close').disabled = false;
       button.disabled = false; button.removeAttribute('aria-busy'); updatePackage();
     }
+  });
+  // One semantic table; on small screens compare two selectable packages without sideways scrolling.
+  const comparison = config.sponsorComparison;
+  const packageIds = Object.keys(config.sponsorPackages);
+  const compactComparison = matchMedia('(max-width: 1000px)');
+  const firstChoice = document.getElementById('compare-first');
+  const secondChoice = document.getElementById('compare-second');
+  let comparisonOpener, comparisonChosen = false;
+  function comparisonIcon(name) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'icon'); svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', `assets/icons.svg#${name}`); svg.append(use); return svg;
+  }
+  [firstChoice, secondChoice].forEach(picker => packageIds.forEach(id => {
+    const option = document.createElement('option'); option.value = id;
+    option.textContent = amount(id); picker.append(option);
+  }));
+  firstChoice.value = '500'; secondChoice.value = '1000';
+  function renderComparison() {
+    const ids = compactComparison.matches ? [firstChoice.value, secondChoice.value] : packageIds;
+    const table = document.getElementById('compare-table');
+    table.querySelectorAll('thead, tbody, tfoot').forEach(el => el.remove());
+    const head = table.createTHead().insertRow();
+    const corner = document.createElement('th'); corner.scope = 'col'; corner.className = 'compare-corner';
+    corner.textContent = 'Dit krijg je'; head.append(corner);
+    ids.forEach(id => {
+      const th = document.createElement('th'); th.scope = 'col';
+      const label = document.createElement('span'); label.className = 'compare-package-label';
+      label.textContent = id === '5000' ? 'Hoofdsponsor' : 'Sponsorpakket';
+      const price = document.createElement('strong'); price.textContent = amount(id);
+      th.append(label, price); head.append(th);
+    });
+    const body = table.createTBody();
+    comparison.rows.forEach(feature => {
+      const row = body.insertRow(); row.dataset.feature = feature.key;
+      const th = document.createElement('th'); th.scope = 'row';
+      const label = document.createElement('span'); label.textContent = feature.label;
+      const note = document.createElement('small'); note.textContent = feature.note;
+      const copy = document.createElement('span'); copy.append(label, note);
+      th.append(comparisonIcon(feature.icon), copy); row.append(th);
+      ids.forEach(id => {
+        const cell = row.insertCell();
+        const value = feature.key === 'coins' ? config.sponsorPackages[id].coins : comparison.packages[id][feature.key];
+        if (feature.key === 'coins') {
+          const number = document.createElement('strong'); number.className = 'compare-coins'; number.textContent = value ?? '—'; cell.append(number);
+          const detail = document.createElement('small'); detail.textContent = value === null ? 'Niet vermeld' : 'munten'; cell.append(detail);
+        } else if (value === true) {
+          const badge = document.createElement('span'); badge.className = 'compare-check'; badge.append(comparisonIcon('check'));
+          const text = document.createElement('span'); text.className = 'sr-only'; text.textContent = 'Inbegrepen'; badge.append(text); cell.append(badge);
+        } else if (!value) {
+          const dash = document.createElement('span'); dash.className = 'compare-dash'; dash.setAttribute('aria-label', 'Niet vermeld bij dit pakket'); dash.textContent = '—'; cell.append(dash);
+        } else {
+          const [text, detail] = value.split('|'); cell.append(document.createTextNode(text));
+          if (detail) { const small = document.createElement('small'); small.textContent = detail; cell.append(small); }
+        }
+      });
+    });
+    const actions = table.createTFoot().insertRow();
+    const th = document.createElement('th'); th.scope = 'row'; th.textContent = 'Doe mee'; actions.append(th);
+    ids.forEach(id => {
+      const cell = actions.insertCell(); const choose = document.createElement('button');
+      choose.className = 'compare-choose'; choose.type = 'button'; choose.textContent = 'Kies pakket';
+      choose.setAttribute('aria-label', `Vraag het pakket van ${amount(id)} aan`);
+      choose.append(comparisonIcon('arrow-up-right'));
+      choose.addEventListener('click', () => {
+        comparisonChosen = true; compareDialog.close();
+        open(id, dialog.open ? opener : comparisonOpener);
+      });
+      cell.append(choose);
+    });
+  }
+  function changeComparison(changed, other) {
+    if (changed.value === other.value) other.value = packageIds.find(id => id !== changed.value);
+    renderComparison();
+  }
+  firstChoice.addEventListener('change', () => changeComparison(firstChoice, secondChoice));
+  secondChoice.addEventListener('change', () => changeComparison(secondChoice, firstChoice));
+  compactComparison.addEventListener('change', () => { if (compareDialog.open) renderComparison(); });
+  if (typeof compareDialog.showModal === 'function') document.querySelectorAll('[data-compare]').forEach(control => {
+    control.hidden = false;
+    control.addEventListener('click', () => {
+      comparisonOpener = control; comparisonChosen = false;
+      if (dialog.open) {
+        firstChoice.value = select.value;
+        if (secondChoice.value === firstChoice.value) secondChoice.value = packageIds.find(id => Number(id) > Number(firstChoice.value)) || '250';
+      }
+      renderComparison(); compareDialog.showModal();
+      document.body.classList.add('sponsor-modal-open'); compareDialog.scrollTop = 0;
+      document.getElementById('compare-title').focus();
+    });
+  });
+  compareDialog.querySelector('.compare-close').addEventListener('click', () => compareDialog.close());
+  compareDialog.addEventListener('click', event => {
+    if (event.target !== compareDialog) return;
+    const r = compareDialog.getBoundingClientRect();
+    if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) compareDialog.close();
+  });
+  compareDialog.addEventListener('close', () => {
+    if (!dialog.open) document.body.classList.remove('sponsor-modal-open');
+    if (!comparisonChosen) comparisonOpener?.focus();
   });
   const initial = new URLSearchParams(location.search).get('pakket');
   if (initial && config.sponsorPackages[initial]) open(initial, null);

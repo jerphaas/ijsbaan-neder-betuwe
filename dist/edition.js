@@ -29,6 +29,25 @@ window.IJSBAAN = {
     { id: 'kesteren-2027', place: 'Kesteren', season: '2027 / 2028', start: null, end: null, location: null, status: 'next' }
   ],
   contact: { name: 'Ton Keuken', email: 'tonkeuken@gmail.com', phone: '0653638778' },
+  // Alleen expliciet genoemde voordelen: hogere bedragen erven niet automatisch alle eerdere extra's.
+  sponsorComparison: {
+    rows: [
+      { key: 'coins', label: 'Schaatsmunten', note: 'Om uit te delen', icon: 'ticket' },
+      { key: 'privateEvening', label: 'Een eigen avond op het ijs', note: '20.00–22.00 uur¹', icon: 'users-round' },
+      { key: 'boarding', label: 'Langs de ijsbaan', note: 'Vermelding op de boarding', icon: 'map-pin' },
+      { key: 'fences', label: 'Op de afzethekken', note: 'Combinatie-sponsordoek', icon: 'plus' },
+      { key: 'newspaper', label: 'In de krant', note: 'Naam of advertentie', icon: 'mail' },
+      { key: 'social', label: 'Op sociale media', note: 'Aandacht voor jouw bedrijf', icon: 'heart' }
+    ],
+    packages: {
+      250: { privateEvening: false, boarding: null, fences: false, newspaper: null, social: false },
+      500: { privateEvening: true, boarding: null, fences: false, newspaper: null, social: false },
+      750: { privateEvening: true, boarding: 'Combinatiedoek|Binnenzijde', fences: true, newspaper: null, social: true },
+      1000: { privateEvening: true, boarding: 'Extra groot|Binnenzijde', fences: false, newspaper: 'Naamsvermelding', social: true },
+      2500: { privateEvening: true, boarding: 'Extra groot|Binnenzijde', fences: false, newspaper: 'Advertentie', social: true },
+      5000: { privateEvening: true, boarding: 'Eigen spandoek|Eén buitenzijde', fences: false, newspaper: 'Advertentie', social: true }
+    }
+  },
   sponsorPackages: {
     250: { coins: 60, benefits: ['60 schaatsmunten om uit te delen aan klanten, medewerkers, familie of kinderen.'] },
     500: { coins: 125, benefits: ['125 schaatsmunten.', 'De baan gratis afhuren van 20.00 tot 22.00 uur, op afspraak en bij beschikbaarheid.'] },

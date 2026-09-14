@@ -207,6 +207,7 @@
     <section class="sponsor-section" id="sponsoren" aria-labelledby="sponsor-title">
       <div class="container section">
         <div class="sponsor-heading"><div><p class="eyebrow">VOOR EEN WINTER VOL BLIJE GEZICHTEN</p><h2 id="sponsor-title">Geef winterpret<br><em class="handwritten">een zetje.</em></h2></div><p>Een ijsbaan komt er dankzij mensen en bedrijven die meedoen. Met jouw bijdrage maak je schaatsplezier mogelijk voor kinderen en families uit de buurt.</p></div>
+        <div class="sponsor-compare-bar"><p>Van munten uitdelen tot zichtbaar langs de baan.</p><button type="button" class="sponsor-compare-open" data-compare hidden>Vergelijk de pakketten <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/icons.svg#arrow-up-right"></use></svg></button></div>
         <div class="sponsor-grid">
           <article class="sponsor-card">
             <div class="package-value"><h3>€ 250</h3><p class="coins"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/icons.svg#ticket"></use></svg> 60 munten</p></div>
@@ -278,6 +279,7 @@
               <option value="250">€ 250 — 60 schaatsmunten</option><option value="500" selected>€ 500 — 125 schaatsmunten</option><option value="750">€ 750 — 170 schaatsmunten</option><option value="1000">€ 1.000 — 215 schaatsmunten</option><option value="2500">€ 2.500 — 520 schaatsmunten</option><option value="5000">€ 5.000 — Hoofdsponsor</option>
             </select><span class="field-error" id="package-error"></span></div>
             <details><summary id="package-summary">Bekijk alle voordelen</summary><ul id="package-includes" class="package-includes"></ul></details>
+            <button class="compare-from-form" type="button" data-compare hidden>Toch nog vergelijken? Bekijk alle pakketten <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/icons.svg#arrow-up-right"></use></svg></button>
           </div>
           <div class="sponsor-fields">
             <div class="sponsor-field"><label for="sponsor-company">Bedrijf / organisatie *</label><input id="sponsor-company" name="company" autocomplete="organization" maxlength="160" required aria-describedby="company-error"><span class="field-error" id="company-error"></span></div>
@@ -304,6 +306,15 @@
         <p id="sponsor-confirmation"></p><p class="reference-tag">Aanvraagnummer<br><strong id="sponsor-reference"></strong></p>
         <p>Een vraag? Mail <a href="mailto:tonkeuken@gmail.com">Ton Keuken</a> of bel <a href="tel:+31653638778">06 53 63 87 78</a>.</p><button class="button" type="button" data-close-sponsor>Terug naar de winterpret</button>
       </div>
+    </div>
+  </dialog>
+  <dialog id="compare-dialog" aria-labelledby="compare-title" aria-describedby="compare-intro">
+    <div class="compare-top"><div><p class="eyebrow">JULLIE BIJDRAGE. HUN MOOISTE WINTER.</p><h2 id="compare-title" tabindex="-1">Wat past <em class="handwritten ink-green">bij jullie?</em></h2><p id="compare-intro">Alle pakketten maken winterpret mogelijk. Bekijk hoe de schaatsmunten en de aandacht voor jouw bedrijf per pakket verschillen.</p></div><button class="compare-close" type="button" aria-label="Vergelijking sluiten"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/icons.svg#x"></use></svg></button></div>
+    <div class="compare-body">
+      <div class="compare-mobile-pickers"><p>Kies twee pakketten om naast elkaar te bekijken.</p><div><label for="compare-first">Eerste pakket<select id="compare-first"></select></label><label for="compare-second">Tweede pakket<select id="compare-second"></select></label></div></div>
+      <div class="compare-table-wrap"><table class="compare-table" id="compare-table"><caption class="sr-only">Vergelijk de sponsorpakketten van IJsbaan Neder-Betuwe</caption></table></div>
+      <div class="compare-footnotes"><p><strong>¹ Een eigen avond:</strong> gratis afhuren van 20.00 tot 22.00 uur, op afspraak en bij beschikbaarheid.</p><p><strong>Hoofdsponsor:</strong> vier pakketten in totaal. De verdere invulling gaat in overleg; een vast aantal schaatsmunten is niet vermeld.</p><p><strong>Een streepje?</strong> Dat voordeel is niet vermeld bij dat pakket. Elk pakket heeft zijn eigen invulling.</p></div>
+      <p class="compare-giving"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/icons.svg#heart"></use></svg><span>Munten over? Je kunt ze ook doorgeven aan scholen en kinderen uit gezinnen die minder te besteden hebben.</span></p>
     </div>
   </dialog>
 </body>
