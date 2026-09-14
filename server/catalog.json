@@ -4,6 +4,18 @@
     "place": "Opheusden",
     "season": "2026 / 2027"
   },
+  "editions": [
+    {
+      "id": "opheusden-2026",
+      "place": "Opheusden",
+      "season": "2026 / 2027"
+    },
+    {
+      "id": "kesteren-2027",
+      "place": "Kesteren",
+      "season": "2027 / 2028"
+    }
+  ],
   "packages": {
     "250": {
       "coins": 60,

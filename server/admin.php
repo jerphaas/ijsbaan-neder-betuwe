@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/admin_views.php';
+require_once __DIR__ . '/partners_admin.php';
 
 function sponsor_admin_ticket(): string {
     $db = sponsor_db();
@@ -99,6 +100,7 @@ function sponsor_admin_route(): void {
         header('Content-Type: application/json; charset=utf-8');
         if (($_SERVER['HTTP_ORIGIN'] ?? '') !== sponsor_config()['site_url']) sponsor_fail('Open het beheer op de eigen website.', 403);
         $action = $_POST['action'] ?? '';
+        if ($action === 'profile-save') partner_admin_save();
         if ($action === 'login') {
             sponsor_rate_limit(sponsor_db(), $_SERVER['REMOTE_ADDR'] ?? '', 30, 'admin-login');
             $ticket = $_POST['ticket'] ?? '';
@@ -131,11 +133,12 @@ function sponsor_admin_route(): void {
     }
     if ($method !== 'GET' && $method !== 'HEAD') { header('Allow: GET, HEAD, POST'); sponsor_fail('Methode niet toegestaan.', 405); }
     if (!isset($_SESSION['admin_since'])) {
-        if (isset($_GET['csv']) || isset($_GET['logo']) || isset($_GET['id'])) http_response_code(401);
+        if (isset($_GET['csv']) || isset($_GET['logo']) || isset($_GET['id']) || isset($_GET['partners']) || isset($_GET['partner_logo'])) http_response_code(401);
         sponsor_admin_login_page(); return;
     }
     $csrf = $_SESSION['csrf'];
     session_write_close();
+    if (isset($_GET['partners']) || isset($_GET['partner_logo'])) { partner_admin_route($csrf); return; }
     if (isset($_GET['logo'])) {
         $app = is_string($_GET['logo']) ? sponsor_admin_get($_GET['logo']) : null;
         $file = $app['logo_file'] ?? '';

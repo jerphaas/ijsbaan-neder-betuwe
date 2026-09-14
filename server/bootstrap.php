@@ -167,6 +167,10 @@ function sponsor_route(): void {
 }
 function sponsor_maintenance(string $action): void {
     $db = sponsor_db();
+    if ($action === 'profiles-import') {
+        require_once __DIR__ . '/partners.php';
+        partner_import();
+    }
     if ($action === 'admin-link') {
         require_once __DIR__ . '/admin.php';
         sponsor_json(['ok' => true, 'ticket' => sponsor_admin_ticket(), 'expiresIn' => 300]);

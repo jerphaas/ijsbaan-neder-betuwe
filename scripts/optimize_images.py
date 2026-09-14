@@ -15,6 +15,22 @@ SPECS = {
 }
 
 
+def optimize_partner(source, stem):
+    """Keep the original logo and colour treatment; return a small hashed WebP."""
+    from io import BytesIO
+    target = ASSETS / 'partners'
+    target.mkdir(exist_ok=True)
+    with Image.open(source) as original:
+        copy = ImageOps.exif_transpose(original).convert('RGBA')
+        copy.thumbnail((480, 180), Image.Resampling.LANCZOS)
+        encoded = BytesIO()
+        copy.save(encoded, format='WEBP', quality=92, method=6)
+        data = encoded.getvalue()
+    name = f'{stem}-{hashlib.sha256(data).hexdigest()[:10]}.webp'
+    (target / name).write_bytes(data)
+    return 'assets/partners/' + name
+
+
 def main():
     page = ROOT / 'dist/index.html'
     html = page.read_text(encoding='utf-8')

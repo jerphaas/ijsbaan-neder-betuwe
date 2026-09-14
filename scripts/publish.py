@@ -6,6 +6,7 @@ import getpass
 import hashlib
 from io import BytesIO
 import json
+import re
 from pathlib import PurePosixPath
 import subprocess
 import sys
@@ -20,6 +21,19 @@ def git(*args):
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def static_home(data):
+    """Only two explicit sponsor slots may differ from the committed HTML template."""
+    for key in (b'STRIP', b'GRID'):
+        start = b'<!-- PARTNERS:' + key + b':START -->'
+        end = b'<!-- PARTNERS:' + key + b':END -->'
+        if start not in data and end not in data:
+            continue  # One-time migration from the original static home page.
+        if data.count(start) != 1 or data.count(end) != 1:
+            raise RuntimeError('Onverwachte sponsorblokken in de startpagina.')
+        data = re.sub(re.escape(start) + b'.*?' + re.escape(end), start + end, data, flags=re.S)
+    return data
 
 
 def snapshot():
@@ -67,14 +81,17 @@ def verify(files):
     nonce = uuid4().hex
     names = [name for name in files if not name.startswith('.') and not name.endswith('.php')]
     def check(name):
-        if digest(live_file(name, nonce)) != digest(files[name]):
+        actual, expected = live_file(name, nonce), files[name]
+        if name == 'index.html':
+            actual, expected = static_home(actual), static_home(expected)
+        if digest(actual) != digest(expected):
             raise RuntimeError('Online bestand wijkt af van de commit: ' + name)
         return name
     with ThreadPoolExecutor(max_workers=4) as pool:
         checked = list(pool.map(check, names))
-    if digest(live_file('', nonce)) != digest(files['index.html']):
+    if digest(static_home(live_file('', nonce))) != digest(static_home(files['index.html'])):
         raise RuntimeError('De domeinstartpagina toont nog een ander bestand.')
-    print(f'HTTPS-controle: startpagina en {len(checked)} bestanden exact gelijk aan de commit.', flush=True)
+    print(f'HTTPS-controle: {len(checked)} bestanden bevestigd; startpagina gelijk aan de commit buiten de twee actuele sponsorblokken.', flush=True)
 
 
 def remote_inventory(ftp, folders):
@@ -127,7 +144,7 @@ def publish(commit, files):
         if inventory.get('index.html', {}).get('type') != 'file':
             raise RuntimeError('Geen herkenbare index.html in de gecontroleerde webmap.')
         previous_index = read_remote(ftp, 'index.html')
-        if digest(previous_index) != digest(live_file('index.html', token)):
+        if digest(static_home(previous_index)) != digest(static_home(live_file('index.html', token))):
             raise RuntimeError('FTP-webmap en openbaar domein tonen verschillende index.html-bestanden.')
         saved = []
         for name in [*files, 'site-version.json']:

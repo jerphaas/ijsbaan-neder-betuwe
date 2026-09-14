@@ -45,3 +45,24 @@ CREATE TABLE IF NOT EXISTS sponsor_rate_limits (
   expires_at DATETIME NOT NULL,
   KEY expiry (expires_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS sponsor_profiles (
+  id VARCHAR(64) PRIMARY KEY,
+  name VARCHAR(160) NOT NULL,
+  website VARCHAR(600) NOT NULL DEFAULT '',
+  description VARCHAR(600) NOT NULL DEFAULT '',
+  edition_id VARCHAR(80) NOT NULL,
+  amount INT UNSIGNED NOT NULL DEFAULT 0,
+  tier VARCHAR(16) NOT NULL DEFAULT 'friend',
+  sort_order INT UNSIGNED NOT NULL DEFAULT 100,
+  visible TINYINT(1) NOT NULL DEFAULT 0,
+  logo_asset VARCHAR(200) NOT NULL DEFAULT '',
+  logo_file VARCHAR(80) NULL,
+  logo_dark TINYINT(1) NOT NULL DEFAULT 0,
+  source_note TEXT NOT NULL,
+  application_id BIGINT UNSIGNED NULL UNIQUE,
+  revision INT UNSIGNED NOT NULL DEFAULT 1,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
+  KEY public_order (edition_id, visible, sort_order),
+  CONSTRAINT sponsor_profile_application FOREIGN KEY (application_id) REFERENCES sponsor_applications(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
