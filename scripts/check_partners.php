@@ -9,8 +9,20 @@ $html = partner_tile($profile);
 check(!str_contains($html, '<script>') && !str_contains($html, 'javascript:') && !str_contains($html, 'config.json') && str_contains($html, '&lt;script&gt;'), 'Untrusted profile data not escaped');
 $profile['name'] = 'Voorbeeld'; $profile['website'] = 'https://example.com/';
 $parts = partner_fragments([$profile]);
-check(str_contains($parts['strip'], 'Onze') === false && str_contains($parts['strip'], 'Hoofdsponsors'), 'Main sponsor slot missing');
+check(str_contains($parts['strip'], 'ONZE SPONSORS') && str_contains($parts['strip'], 'Voorbeeld'), 'Sponsor slider missing');
 check(str_contains($parts['grid'], 'Voorbeeld') && str_contains($parts['grid'], 'noopener sponsored'), 'Public profile/link missing');
 $profile['tier'] = 'friend';
-check(partner_fragments([$profile])['strip'] === '', 'Non-main sponsor entered main strip');
-echo "PASS: URL safety, escaped names/descriptions, safe logo paths and main sponsor separation.\n";
+check(str_contains(partner_fragments([$profile])['strip'], 'Voorbeeld'), 'Friend missing from slider');
+$profiles = [];
+for ($i = 0; $i < 43; $i++) {
+    $row = $profile; $row['name'] = 'Sponsor nummer ' . $i;
+    $row['tier'] = $i < 4 ? 'main' : ($i % 2 ? 'friend' : 'partner');
+    $profiles[] = $row;
+}
+$parts = partner_fragments($profiles);
+foreach (['strip', 'grid'] as $part) {
+    check(substr_count($parts[$part], 'class="partner-item"') === 43, 'Not all 43 sponsors in ' . $part);
+    foreach ($profiles as $row) check(str_contains($parts[$part], '>' . $row['name'] . '<'), $row['name'] . ' missing from ' . $part);
+}
+check(partner_fragments([])['strip'] === '', 'Empty slider rendered');
+echo "PASS: safe URLs, escaped profile data, safe logos and all 43 sponsors of every tier in both slider and wall.\n";

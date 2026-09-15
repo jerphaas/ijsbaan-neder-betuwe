@@ -34,8 +34,7 @@ function partner_tile(array $p, bool $main = false): string {
     return $html . '</' . $tag . '></li>';
 }
 function partner_fragments(array $profiles): array {
-    $mains = array_values(array_filter($profiles, fn($p) => $p['tier'] === 'main'));
-    $strip = $mains ? '<div class="partner-strip-inner container" data-partners-rendered><div class="partner-strip-title"><span class="eyebrow">ONZE HOOFDSPONSORS</span><span>Een groot hart voor kleine schaatsers.</span><a class="partner-all-link" href="#onze-sponsors">Alle ' . count($profiles) . ' sponsors bekijken <span aria-hidden="true">↓</span></a></div><ul class="partner-main-list" aria-label="Hoofdsponsors">' . implode('', array_map(fn($p) => partner_tile($p, true), $mains)) . '</ul></div>' : '';
+    $strip = $profiles ? '<div class="partner-strip-inner container" data-partners-rendered><div class="partner-strip-title"><span class="eyebrow">ONZE SPONSORS</span><span>Een groot hart voor kleine schaatsers.</span><a class="partner-all-link" href="#onze-sponsors">Alle ' . count($profiles) . ' sponsors bekijken <span aria-hidden="true">↓</span></a></div><ul class="partner-main-list" aria-label="Alle sponsors in de slider">' . implode('', array_map(fn($p) => partner_tile($p, true), $profiles)) . '</ul></div>' : '';
     $grid = '<div data-partners-rendered>';
     if ($profiles) {
         $grid .= '<p class="partner-count">' . count($profiles) . ' sponsors doen mee aan deze editie</p><ul class="partner-wall" id="partner-wall" aria-label="Alle sponsors">';

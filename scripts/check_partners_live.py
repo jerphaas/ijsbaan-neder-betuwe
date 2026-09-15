@@ -50,12 +50,12 @@ def main():
     status,headers,body=request('/api/partners.php');assert status==200
     fragments=json.loads(body)['fragments']
     assert 'Huverba B.V.' in fragments['grid'] and 'N.N.' not in body.decode()
-    assert fragments['strip'].count('class="partner-item"')==4
+    assert fragments['strip'].count('class="partner-item"')==43
     assert fragments['grid'].count('class="partner-item"')==43
     assert all(key not in body.decode() for key in ('source_note','package_amount','contact_name','logo_file'))
     status,_,home=request('/?check='+uuid4().hex)
     assert status==200 and b'Huverba B.V.' in home and b'43 sponsors' in home and b'N.N.' not in home
-    print('PASS: 43 public sponsors, 4 main sponsors, crawlable HTML, hidden profile/logo protected.')
+    print('PASS: all 43 public sponsors in slider and wall, crawlable HTML, hidden profile/logo protected.')
     ticket=action('admin-link')['ticket'];assert request('/beheer/',{'action':'login','ticket':ticket})[0]==200
     status,_,body=request('/beheer/?partners=1');assert status==200 and b'N.N.' in body and body.count(b'data-label="Bedrijf"')==44
     status,_,body=request('/beheer/?partners=1&edit=excel-2026-03');saved=Form(body).values
