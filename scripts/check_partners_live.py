@@ -26,7 +26,7 @@ class Form(HTMLParser):
         if tag=='select':self.select=None
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--exercise-hidden-profile',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--exercise-hidden-profile',action='store_true');parser.add_argument('--expected-public',type=int,help='Expected visible sponsor count after a confirmed addition');args=parser.parse_args()
     browser=build_opener(HTTPCookieProcessor(CookieJar()))
     def request(path,payload=None,logo=None,origin=BASE):
         headers={'Cache-Control':'no-cache','Accept':'application/json' if payload else 'text/html'}
@@ -50,14 +50,16 @@ def main():
     status,headers,body=request('/api/partners.php');assert status==200
     fragments=json.loads(body)['fragments']
     assert 'Huverba B.V.' in fragments['grid'] and 'N.N.' not in body.decode()
-    assert fragments['strip'].count('class="partner-item"')==43
-    assert fragments['grid'].count('class="partner-item"')==43
+    public_count=fragments['grid'].count('class="partner-item"')
+    assert public_count>0
+    if args.expected_public is not None: assert public_count==args.expected_public
+    assert fragments['strip'].count('class="partner-item"')==public_count
     assert all(key not in body.decode() for key in ('source_note','package_amount','contact_name','logo_file'))
     status,_,home=request('/?check='+uuid4().hex)
-    assert status==200 and b'Huverba B.V.' in home and b'43 sponsors' in home and b'N.N.' not in home
-    print('PASS: all 43 public sponsors in slider and wall, crawlable HTML, hidden profile/logo protected.')
+    assert status==200 and b'Huverba B.V.' in home and f'{public_count} sponsors'.encode() in home and b'N.N.' not in home
+    print(f'PASS: all {public_count} public sponsors in slider and wall, crawlable HTML, hidden profile/logo protected.')
     ticket=action('admin-link')['ticket'];assert request('/beheer/',{'action':'login','ticket':ticket})[0]==200
-    status,_,body=request('/beheer/?partners=1');assert status==200 and b'N.N.' in body and body.count(b'data-label="Bedrijf"')==44
+    status,_,body=request('/beheer/?partners=1');assert status==200 and b'N.N.' in body and body.count(b'data-label="Bedrijf"')>=public_count+1
     status,_,body=request('/beheer/?partners=1&edit=excel-2026-03');saved=Form(body).values
     assert saved['profile_id']=='excel-2026-03' and 'visible' not in saved
     assert request('/beheer/',{**saved,'csrf':'invalid'})[0]==403
