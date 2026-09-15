@@ -222,5 +222,11 @@
     "name": "Combinatie Mauritz B.V.",
     "source": "https://combinatiemauritz.nl/wp-content/uploads/2020/08/logo-CM.png",
     "file": "combinatie-mauritz.png"
+  },
+  {
+    "id": "plantencentrum-eerbeek",
+    "name": "Plantencentrum Eerbeek B.V.",
+    "source": "https://www.plantencentrumeerbeek.nl/wp-content/themes/plantencentrumeerbeek/assets/images/logo.png",
+    "file": "plantencentrum-eerbeek.png"
   }
 ]
