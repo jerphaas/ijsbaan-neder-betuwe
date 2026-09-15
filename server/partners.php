@@ -35,13 +35,12 @@ function partner_tile(array $p, bool $main = false): string {
 }
 function partner_fragments(array $profiles): array {
     $mains = array_values(array_filter($profiles, fn($p) => $p['tier'] === 'main'));
-    $strip = $mains ? '<div class="partner-strip-inner container" data-partners-rendered><div class="partner-strip-title"><span class="eyebrow">ONZE HOOFDSPONSORS</span><span>Een groot hart voor kleine schaatsers.</span><a href="#onze-sponsors">Bekijk alle sponsors <span aria-hidden="true">↗</span></a></div><ul class="partner-main-list" aria-label="Hoofdsponsors">' . implode('', array_map(fn($p) => partner_tile($p, true), $mains)) . '</ul></div>' : '';
+    $strip = $mains ? '<div class="partner-strip-inner container" data-partners-rendered><div class="partner-strip-title"><span class="eyebrow">ONZE HOOFDSPONSORS</span><span>Een groot hart voor kleine schaatsers.</span><a class="partner-all-link" href="#onze-sponsors">Alle ' . count($profiles) . ' sponsors bekijken <span aria-hidden="true">↓</span></a></div><ul class="partner-main-list" aria-label="Hoofdsponsors">' . implode('', array_map(fn($p) => partner_tile($p, true), $mains)) . '</ul></div>' : '';
     $grid = '<div data-partners-rendered>';
     if ($profiles) {
         $grid .= '<p class="partner-count">' . count($profiles) . ' sponsors doen mee aan deze editie</p><ul class="partner-wall" id="partner-wall" aria-label="Alle sponsors">';
         foreach ($profiles as $p) $grid .= partner_tile($p);
         $grid .= '</ul>';
-        if (count($profiles) > 12) $grid .= '<button type="button" class="button partner-expand" aria-expanded="false" aria-controls="partner-wall" hidden>Bekijk alle ' . count($profiles) . ' sponsors <span aria-hidden="true">↓</span></button>';
     } else $grid .= '<p class="partner-empty">Binnenkort vind je hier de sponsors van deze editie.</p>';
     return ['strip' => $strip, 'grid' => $grid . '</div>'];
 }
