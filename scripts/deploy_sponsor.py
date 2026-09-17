@@ -1,11 +1,36 @@
 """Deploy only committed sponsor code into the previously verified private directory."""
 import json
+import os
 from pathlib import PurePosixPath
 import subprocess
+from zipfile import ZipFile, ZIP_DEFLATED
 from hosting import CONFIG, PRIVATE, ROOT, crypt
-from sponsor_admin import credentials, action
+from sponsor_admin import validate_remote_config, action
 
 PRIVATE_REMOTE = '/domains/ijsbaannederbetuwe.nl/sponsor-private'
+
+
+def preserve_backup(ftp, backup, token):
+    """Keep the pre-deploy copy outside public_html, including on ephemeral CI runners."""
+    from publish import upload
+    previous = ftp.pwd()
+    ftp.cwd(PRIVATE_REMOTE)
+    inventory = dict(ftp.mlsd())
+    if 'deploy-backups' not in inventory:
+        ftp.mkd('deploy-backups')
+    elif inventory['deploy-backups'].get('type') != 'dir':
+        raise RuntimeError('De afgeschermde back-upmap is geen gewone map.')
+    ftp.sendcmd('SITE CHMOD 700 deploy-backups')
+    archive = backup.with_suffix('.zip')
+    with ZipFile(archive, 'w', ZIP_DEFLATED) as bundle:
+        for file in sorted(backup.rglob('*')):
+            if file.is_file():
+                bundle.write(file, file.relative_to(backup).as_posix())
+    name = 'deploy-backups/' + archive.name
+    upload(ftp, name, archive.read_bytes(), token)
+    ftp.sendcmd('SITE CHMOD 600 ' + name)
+    ftp.cwd(previous)
+    print('Reservekopie ook afgeschermd op de hosting bewaard:', archive.name, flush=True)
 
 
 def snapshot():
@@ -38,10 +63,7 @@ def deploy(ftp, commit, files, backup, token):
     if inventory.get('config.json', {}).get('type') != 'file':
         raise RuntimeError('De afgeschermde sponsorconfig ontbreekt.')
     remote_config = json.loads(read_remote(ftp, 'config.json'))
-    local_config = credentials()
-    for key in ('db', 'smtp', 'maintenance_key', 'form_key', 'site_url', 'from_email', 'organizer_email'):
-        if remote_config[key] != local_config[key]:
-            raise RuntimeError('Lokale en remote sponsorconfig wijken af: ' + key)
+    validate_remote_config(remote_config)
     if 'app' not in inventory:
         ftp.mkd('app')
     elif inventory['app'].get('type') != 'dir':
@@ -62,6 +84,8 @@ def deploy(ftp, commit, files, backup, token):
         target = backup / 'sponsor-server' / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(read_remote(ftp, name))
+    # A failed backup must stop before any existing website/backend file is replaced.
+    preserve_backup(ftp, backup, token)
     for folder in sorted(folders, key=lambda x: (len(PurePosixPath(x).parts), x)):
         if folder == '.':
             continue
@@ -83,6 +107,8 @@ def activate(ftp, commit, token):
     ftp.cwd(PRIVATE_REMOTE)
     config = json.loads(read_remote(ftp, 'config.json'))
     if not config.get('enabled'):
+        if os.environ.get('GITHUB_ACTIONS') == 'true':
+            raise RuntimeError('Sponsorbackend is tijdens publicatie uitgeschakeld; configuratie blijft ongemoeid.')
         config['enabled'] = True
         upload(ftp, 'config.json', json.dumps(config).encode(), token)
         ftp.sendcmd('SITE CHMOD 600 config.json')

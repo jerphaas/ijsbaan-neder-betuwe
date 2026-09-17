@@ -7,6 +7,7 @@ import getpass
 import hashlib
 from io import BytesIO
 import json
+import os
 import re
 from pathlib import PurePosixPath
 import subprocess
@@ -127,6 +128,15 @@ def upload(ftp, name, content, token):
 def publish(commit, files):
     import deploy_sponsor
     server_files = deploy_sponsor.snapshot()
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        from hosting import ftp_password
+        from sponsor_admin import action
+        ftp_password()
+        if not re.fullmatch(r'[a-f0-9]{64}', os.environ.get('IJSBAAN_CONFIG_SHA256', '')):
+            raise RuntimeError('De GitHub environment mist de bevestigde configuratiefingerprint.')
+        health = action('health')
+        if not health.get('enabled') or health.get('schema') != 1:
+            raise RuntimeError('De bestaande actieve sponsorbackend is niet bevestigd; niets gepubliceerd.')
     root = CONFIG['remoteRoot']
     if root != '/domains/ijsbaannederbetuwe.nl/public_html':
         raise RuntimeError('De gecontroleerde webmap is gewijzigd; eerst opnieuw inspecteren.')

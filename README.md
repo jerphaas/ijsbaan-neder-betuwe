@@ -14,20 +14,38 @@ De complete statische website staat in `dist/`. Er is geen build, CMS of install
 
 1. Pas de gewenste bestanden in `dist/` aan en bekijk het resultaat lokaal.
 2. Sla de wijziging op met een Git-commit en push naar `main`.
-3. Dubbelklik op `publiceer.cmd`, of voer `python scripts/publish.py --publish` uit.
+3. GitHub Actions publiceert automatisch naar **ijsbaannederbetuwe.nl**. Volg de workflow [Publiceer op ijsbaannederbetuwe.nl](https://github.com/jerphaas/ijsbaan-neder-betuwe/actions/workflows/hosting.yml).
 
-De publicatieknop zet de **laatste lokale commit** online. Niet-gecommitte wijzigingen in `dist/` en `server/` worden tegengehouden. Na een wijziging via de GitHub-website moet deze lokale map dus eerst worden bijgewerkt met `git pull --ff-only`. Bestanden uit `dist/` gaan naar de webmap; `server/` gaat naar de afgeschermde map `sponsor-private/app/`. Andere bestanden op de hosting worden behouden. Elk te vervangen bestand krijgt vooraf een lokale reservekopie; de startpagina wordt als laatste geplaatst. Daarna vergelijkt het script de openbare statische bestanden met de commit; PHP wordt via FTPS gecontroleerd en de actieve backend via een beveiligde gezondheidscontrole.
+De workflow `.github/workflows/hosting.yml` draait op een GitHub-runner na relevante wijzigingen op `main`; publicatie is daardoor onafhankelijk van deze pc en de lokale WAN-route. Handmatig opnieuw uitvoeren kan met **Run workflow** op `main`. Alleen de actuele `main` mag publiceren. Publicaties lopen achter elkaar en een lopende upload wordt niet automatisch afgebroken. SEO, pakketcatalogus, PHP-syntax en de publicatiecontroles moeten slagen.
+
+Bestanden uit `dist/` gaan naar de webmap; `server/` gaat naar de afgeschermde map `sponsor-private/app/`. Andere bestanden op de hosting worden behouden. Vóór vervanging worden de bestaande website- en backendbestanden geback-upt, zowel op de runner als in een gecontroleerd ZIP-bestand buiten de webmap: `sponsor-private/deploy-backups/` (map 700, bestanden 600). Als deze back-up mislukt, stopt de publicatie. Back-ups bevatten geen database, uploads of `config.json`; die blijven ongemoeid. Ze worden niet als openbaar GitHub-artifact opgeslagen. De startpagina wordt als laatste geplaatst. Daarna controleert het script alle openbare statische bestanden, de PHP-upload en de actieve backend. De workflow voert ook de live SEO- en versiecontrole uit.
+
+De bestaande `publiceer.cmd` en `python scripts/publish.py --publish` blijven een lokale noodroute. Gebruik die niet tegelijk met een lopende GitHub-publicatie. De knop zet de **laatste lokale commit** online; niet-gecommitte wijzigingen in `dist/` en `server/` worden tegengehouden. Na een wijziging via GitHub eerst `git pull --ff-only`.
 
 `python scripts/publish.py --check` controleert de online bestanden zonder iets te wijzigen. De geplaatste versie staat ook op `https://ijsbaannederbetuwe.nl/site-version.json`.
 
-GitHub Pages publiceert daarnaast automatisch vanuit `dist/` met `.github/workflows/pages.yml` na een push naar `main`. Die workflow publiceert niet naar de eigen hosting; daarvoor is de bovenstaande publicatieknop bedoeld.
+GitHub Pages blijft daarnaast een aparte automatische kopie vanuit `dist/`, met `.github/workflows/pages.yml`. De productiepublicatie gebruikt `hosting.yml`. Een groene Pages-run alleen bewijst niet dat het eigen domein is bijgewerkt.
+
+### GitHub production-environment
+
+Activatie: repositoryvariabele `IJSBAAN_AUTO_DEPLOY=true`, nadat de onderstaande environment en secrets zijn ingesteld. Zolang die variabele ontbreekt of niet `true` is, wordt de publicatiejob overgeslagen. Dit is ook de schakelaar om automatische publicatie tijdelijk uit te zetten.
+
+Alleen de branch `main` mag de environment `production` gebruiken. Deze bevat drie versleutelde environment-secrets, hergebruikt uit de bestaande lokale DPAPI-opslag:
+
+- `IJSBAAN_FTP_PASSWORD`: bestaande hostinglogin voor de vastgelegde FTPS-host/gebruiker.
+- `IJSBAAN_MAINTENANCE_KEY`: bestaande sleutel voor migratie en backendcontrole via HTTPS.
+- `IJSBAAN_CONFIG_SHA256`: SHA-256 van de canonieke, bevestigde sponsorconfig. Hiermee controleert de runner de identiteit en configuratie zonder database- of SMTP-wachtwoorden in GitHub op te slaan.
+
+De volledige database-/SMTP-config blijft uitsluitend op de hosting en in de lokale versleutelde DPAPI-opslag. Het publicatiescript vergelijkt de serverconfig in het geheugen en schrijft deze niet naar logs, Git of back-ups. Een gewijzigde configuratie of uitgeschakelde backend stopt de CI-publicatie. Na een bewust gewijzigde serverconfig moet de fingerprint vanuit de gecontroleerde lokale configuratie opnieuw worden ingesteld. Ontbrekende CI-secrets leiden direct tot stoppen, zonder terugval naar Windows DPAPI.
+
+Sponsorprofielen zijn databasegegevens: een codepublicatie maakt geen sponsor aan. Beheerwijzigingen blijven via `/beheer/` verlopen; wachtende lokale sponsorprofielen moeten afzonderlijk worden opgeslagen en teruggelezen.
 
 ### Opgeslagen hostingroute
 
 - Niet-geheime instellingen: `deploy.json`.
 - Beveiligde verbinding: expliciete FTPS op poort 21, `vserver99.axc.eu`, met certificaatcontrole en versleutelde gegevensverbinding. De opgegeven alias `ftp.ijsbaannederbetuwe.nl` verwijst naar dezelfde server, maar het FTP-certificaat hoort bij `*.axc.eu`. Beide hostnamen en dezelfde IPv4/IPv6-adressen zijn op 10 september 2026 gecontroleerd. ProFTPD vereist hergebruik van de TLS-sessie voor de gegevensverbinding; `scripts/hosting.py` verzorgt dit.
 - Gecontroleerde webmap: `/domains/ijsbaannederbetuwe.nl/public_html`.
-- Het wachtwoord staat uitsluitend lokaal in `.deploy/ftp-login.dpapi`, versleuteld met Windows DPAPI voor deze Windows-gebruiker. Deze map wordt niet naar GitHub of de hosting geüpload. Invoer of vervanging kan met `python scripts/publish.py --save-login`; de invoer wordt niet getoond.
+- De lokale kopie van het wachtwoord staat in `.deploy/ftp-login.dpapi`, versleuteld met Windows DPAPI voor deze Windows-gebruiker. GitHub Actions hergebruikt dit wachtwoord via het versleutelde environment-secret hierboven. De `.deploy/`-map wordt niet naar GitHub of de webmap geüpload. Lokale invoer kan met `python scripts/publish.py --save-login`; de invoer wordt niet getoond.
 - Reservekopieën: `.deploy/backups/`. Laatste publicatierapport: `.deploy/last-publish.json`.
 - Een reservekopie bevat alleen de vervangen websitebestanden en een bestandslijst. Terugzetten kan door de gewenste eerdere Git-versie als nieuwe commit te herstellen en opnieuw te publiceren. De publicatie verwijdert geen overige bestanden.
 - Op een andere pc of onder een andere Windows-gebruiker moeten de bestaande hostinggegevens eenmalig opnieuw worden opgeslagen. Schakel bij certificaatproblemen de controle niet uit; controleer de servernaam en de Windows-certificaatketen.

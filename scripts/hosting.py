@@ -1,8 +1,9 @@
-"""Local Windows credentials and certificate-validated explicit FTPS."""
+"""Windows DPAPI or CI environment credentials; certificate-validated FTPS."""
 import ctypes
 from ctypes import wintypes
 from ftplib import FTP, FTP_TLS
 import json
+import os
 from pathlib import Path
 import ssl
 
@@ -16,6 +17,8 @@ class Blob(ctypes.Structure):
 
 
 def crypt(data, encrypt):
+    if os.name != 'nt':
+        raise RuntimeError('Windows DPAPI is alleen lokaal beschikbaar; configureer de GitHub environment-secrets.')
     buffer = (ctypes.c_ubyte * len(data)).from_buffer_copy(data)
     source = Blob(len(data), buffer)
     result = Blob()
@@ -56,15 +59,25 @@ class HostingFTP(FTP_TLS):
         return connection, size
 
 
-def connect():
+def ftp_password():
+    password = os.environ.get('IJSBAAN_FTP_PASSWORD')
+    if password:
+        return password
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        raise RuntimeError('GitHub environment-secret IJSBAAN_FTP_PASSWORD ontbreekt.')
     path = PRIVATE / 'ftp-login.dpapi'
     if not path.exists():
         raise RuntimeError('Inloggegevens ontbreken. Gebruik python scripts/publish.py --save-login.')
     data = json.loads(crypt(path.read_bytes(), False))
     if data['host'] != CONFIG['host'] or data['username'] != CONFIG['username']:
         raise RuntimeError('Opgeslagen login hoort bij een andere host of gebruiker.')
+    return data['password']
+
+
+def connect():
+    password = ftp_password()
     ftp = HostingFTP(context=ssl.create_default_context(), timeout=30)
     ftp.connect(CONFIG['host'], CONFIG['port'])
-    ftp.login(CONFIG['username'], data['password'])
+    ftp.login(CONFIG['username'], password)
     ftp.prot_p()
     return ftp
