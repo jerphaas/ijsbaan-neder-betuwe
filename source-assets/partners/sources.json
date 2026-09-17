@@ -234,5 +234,36 @@
     "name": "KVS Productions B.V.",
     "source": "Aangeleverd bedrijfslogo, september 2026.",
     "file": "kvs-productions.jpg"
+  },
+  {
+    "id": "arends-den-heuvel",
+    "name": "Arends den Heuvel B.V.",
+    "source": "https://www.arendsdenheuvel.nl/wp-content/uploads/2026/03/logo.svg",
+    "file": "arends-den-heuvel.svg"
+  },
+  {
+    "id": "veerhuis-opheusden",
+    "name": "’t Veerhuis Opheusden",
+    "source": "https://www.veerhuis-opheusden.nl/wp-content/uploads/2017/10/logo-veerhuis-1024x377.png",
+    "file": "veerhuis-opheusden.png"
+  },
+  {
+    "id": "johan-willemsen",
+    "name": "Johan Willemsen Computers",
+    "source": "https://www.johanwillemsen.nl/images/design/logo.png",
+    "file": "johan-willemsen.png"
+  },
+  {
+    "id": "vakgarage-de-kruijf",
+    "name": "Vakgarage De Kruijf",
+    "source": "https://oranjeheteren.nl/wp-content/uploads/2025/03/logo-vakgarage-de-kruijf-300x54.png",
+    "file": "vakgarage-de-kruijf.png",
+    "reference": "https://oranjeheteren.nl/sponsors/vakgarage-de-kruijf/"
+  },
+  {
+    "id": "van-suilichem-autos",
+    "name": "Van Suilichem Auto’s B.V.",
+    "source": "https://www.vansuilichem.nl/mvc/public/frontend/images/site-logo.png",
+    "file": "van-suilichem-autos.png"
   }
 ]
