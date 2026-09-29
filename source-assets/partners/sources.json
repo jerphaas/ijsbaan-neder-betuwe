@@ -265,5 +265,36 @@
     "name": "Van Suilichem Auto’s B.V.",
     "source": "https://www.vansuilichem.nl/mvc/public/frontend/images/site-logo.png",
     "file": "van-suilichem-autos.png"
+  },
+  {
+    "id": "de-bruin-betonwerken",
+    "name": "De Bruin Betonwerken",
+    "source": "https://debruinbetonwerken.nl/wp-content/uploads/2023/07/Logo_De_Bruin_Betonwerken_vrijstaand-1024x213.png",
+    "file": "de-bruin-betonwerken.png"
+  },
+  {
+    "id": "arends-natuurlijk",
+    "name": "Arends Natuurlijk",
+    "source": "https://arendsnatuurlijk.com/",
+    "file": "arends-natuurlijk.svg",
+    "note": "Originele inline SVG uit de header van de bedrijfswebsite."
+  },
+  {
+    "id": "van-dijk-metaaldesign",
+    "name": "Van Dijk Metaaldesign",
+    "source": "https://www.vandijkmetaaldesign.nl/wp-content/uploads/2024/09/Logo-zwart.svg",
+    "file": "van-dijk-metaaldesign.svg"
+  },
+  {
+    "id": "van-dam-wonen-en-slapen",
+    "name": "Van Dam Wonen en Slapen",
+    "source": "https://www.vandamwonen.nl/wp-content/uploads/Van-Dam-wonen-slapen.svg",
+    "file": "van-dam-wonen-en-slapen.svg"
+  },
+  {
+    "id": "heeren-van-opheusden",
+    "name": "Heeren van Opheusden",
+    "source": "https://heerenvanopheusden.nl/wp-content/uploads/2025/08/Beeldmerk-2-Champagne.svg",
+    "file": "heeren-van-opheusden.svg"
   }
 ]
