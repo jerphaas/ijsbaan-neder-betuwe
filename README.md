@@ -10,6 +10,15 @@ De GitHub Pages-kopie blijft beschikbaar op https://jerphaas.github.io/ijsbaan-n
 
 ## Publicatie
 
+### SRV01-route en actuele deploystatus
+
+De vastgelegde SRV01-route staat in [deploy/README.md](deploy/README.md).
+Op 29 september 2026 zijn daarmee vijf sponsorprofielen met logo live toegevoegd;
+de tijdelijke koppeling is daarna gesloten. De GitHub-productiepublicatie hieronder
+blijft afhankelijk van `IJSBAAN_AUTO_DEPLOY=true` en de bedoelde secrets. Die
+activatie is nog niet uitgevoerd; de aanwezige workflow alleen bewijst geen deploy.
+
+
 De complete statische website staat in `dist/`. Er is geen build, CMS of installatie van pakketten nodig. Wijzigingen kunnen in deze projectmap worden gemaakt, of door Codex met de opdracht om de ijsbaanwebsite te wijzigen en te publiceren.
 
 1. Pas de gewenste bestanden in `dist/` aan en bekijk het resultaat lokaal.

@@ -32,3 +32,12 @@
 - `dist/index.php` vult uitsluitend de twee gemarkeerde sponsorblokken in de statische `index.html` met zichtbare profielen van de actieve editie. Daardoor zijn namen crawlbaar en beheerwijzigingen direct zichtbaar. De publicatie vergelijkt alle overige HTML exact met de commit. GitHub Pages sluit PHP uit en haalt dezelfde publieke blokken op via `api/partners.php`. Uploadlogo's blijven privé en worden alleen voor een zichtbaar profiel als verkleinde WebP aangeboden.
 - De strook onder de hero is een slider waarin ALLE zichtbare sponsors van de actieve editie rouleren, ongeacht pakket of bijdrage (expliciete correctie 15 september 2026). Toon vier tegelijk op desktop en twee op mobiel, met vorige/volgende, pauzeren en het totale aantal. Controleer een volledige cyclus inclusief de laatste sponsors; alleen de eerste vier testen is onvoldoende. Respecteer minder beweging en pauzeer buiten beeld, bij focus/aanwijzen en in een verborgen tabblad. Het volledige sponsoroverzicht eronder blijft direct uitgeklapt.
 - Nieuwe bevestigde sponsors die door onbereikbare hosting nog niet in het beheer kunnen worden opgeslagen, staan privé in `.deploy/pending-sponsors/`. Controleer die map bij de volgende live-oplevering: sla iedere toevoeging afzonderlijk op via het bestaande sponsorbeheer, controleer eerst op dezelfde bedrijfsnaam/website en editie, lees het opgeslagen profiel en de publieke vermelding terug en archiveer daarna pas het lokale wachtende bestand. Publicatie van Git-bestanden alleen voegt geen databaseprofiel toe. Geen sponsoraanvraag of mail aanmaken voor deze handmatige toevoegingen. De lokale preview neemt wachtende toevoegingen alvast mee; dit bewijst geen live registratie.
+
+- SRV01-route voor sponsorbeheer: zie `deploy/README.md` en `deploy/srv01/`.
+  Op 29 september 2026 zijn de vijf sponsors De Bruin Betonwerken, Arends
+  Natuurlijk, Van Dijk Metaaldesign (Folkert van Dijk), Van Dam Wonen en Slapen
+  en Heeren van Opheusden via SRV01 opgeslagen en live teruggelezen. De vijf
+  oudere pending-profielen zijn behouden. DNS op SRV01 liep vast; de binnen het
+  verzoek gebruikte, opnieuw bevestigde hosting-IP-resolutie werkte met normale
+  TLS-controle. De tijdelijke route is daarna gesloten. Heropen geen afgeronde
+  incidentroute en stel normale codepublicatie niet gelijk aan profielopslag.
