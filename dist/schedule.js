@@ -15,7 +15,10 @@
     const reason = hours.closedDates[iso] || '';
     const closed = Boolean(reason) || hours.closedWeekdays.includes(weekday);
     const holiday = iso >= hours.holidayStart && iso <= hours.holidayEnd;
-    days.push({ iso, weekday, reason, closed, times: holiday || weekday === 6 ? hours.dayOff : hours.schoolDay });
+    const special = hours.specialDates?.[iso];
+    const school = !closed && iso >= hours.schoolStart && iso <= hours.schoolEnd;
+    const note = special?.note || (school ? '09.00–15.00 uur: alleen scholen' : '');
+    days.push({ iso, weekday, reason, closed, note, times: special?.times || (holiday || weekday === 6 ? hours.dayOff : hours.schoolDay) });
   }
 
   // Bundle a short opening weekend with the first full week.
@@ -68,11 +71,13 @@
       const when = document.createElement('td');
       const time = document.createElement('time'); time.dateTime = day.iso;
       time.textContent = format(day.iso, { day: 'numeric', month: 'short' }); when.append(time);
-      if (day.reason) { const reason = document.createElement('small'); reason.textContent = day.reason; when.append(reason); }
+      if (day.reason || day.note) { const reason = document.createElement('small'); reason.textContent = day.reason || day.note; when.append(reason); }
       const opening = document.createElement('td');
       const label = document.createElement('span');
       label.className = day.closed ? 'closed-label' : 'open-hours';
-      label.textContent = day.closed ? 'Gesloten' : day.times.map(t => t.replace(':', '.')).join(' – ');
+      label.textContent = day.closed ? 'Gesloten' : day.times.length === 1
+        ? `Vanaf ${day.times[0].replace(':', '.')}`
+        : day.times.map(t => t.replace(':', '.')).join(' – ');
       opening.append(label); row.append(weekday, when, opening); return row;
     }));
     if (announce) announcement.textContent = `Openingstijden voor ${range(weeks[index])}, ${edition.season}.`;

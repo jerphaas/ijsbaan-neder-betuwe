@@ -9,15 +9,23 @@ window.IJSBAAN = {
       start: '2026-12-11',
       end: null,
       openingHours: {
-        status: 'provisional',
+        status: 'confirmed',
         through: '2027-01-03',
-        holidayStart: '2026-12-19',
-        holidayEnd: '2027-01-03',
-        closedWeekdays: [0, 1],
+        holidayStart: '2026-12-21',
+        holidayEnd: '2026-12-30',
+        closedWeekdays: [0],
         closedDates: {
           '2026-12-25': 'Eerste kerstdag',
           '2026-12-26': 'Tweede kerstdag',
           '2027-01-01': 'Nieuwjaarsdag'
+        },
+        schoolStart: '2026-12-14',
+        schoolEnd: '2026-12-18',
+        schoolReservation: ['09:00', '15:00'],
+        specialDates: {
+          '2026-12-11': { times: ['18:00'], note: 'Gratis openingsavond · schaatsen op = op!' },
+          '2026-12-31': { times: ['10:00', '16:00'] },
+          '2027-01-02': { times: ['10:00', '16:00'] }
         },
         schoolDay: ['15:00', '20:00'],
         dayOff: ['10:00', '20:00']
