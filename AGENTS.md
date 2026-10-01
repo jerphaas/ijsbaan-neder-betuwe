@@ -41,3 +41,5 @@
   verzoek gebruikte, opnieuw bevestigde hosting-IP-resolutie werkte met normale
   TLS-controle. De tijdelijke route is daarna gesloten. Heropen geen afgeronde
   incidentroute en stel normale codepublicatie niet gelijk aan profielopslag.
+
+- Bij niet-bereikbare hosting vanaf de pc: gebruik de op 1 oktober 2026 bewezen SRV01 + DirectAdmin-route uit deploy/DIRECTADMIN-SRV01.md. De bestaande .deploy/ftp-login.dpapi werkt ook voor DirectAdmin. De gebruiker keurde deze bestaande HTTP-route expliciet goed en vroeg hergebruik vast te leggen; stel dezelfde routevraag niet telkens opnieuw. Gebruik path= voor lezen, multipart voor upload, private geverifieerde backups, bronhashconflictdetectie en verse HTTPS-eindcontrole. Beperk publicatie tot de gevraagde websitebestanden, sluit tijdelijke helpers, geen database/mail/config-mutaties. De oorspronkelijke 29-september-route blijft gesloten.
