@@ -80,6 +80,8 @@ try {
     if (($input['operation'] ?? '') === 'close') {
         file_put_contents($state . '/closed', gmdate('c'), LOCK_EX);
         $result = ['ok' => true, 'closed' => true];
+    } elseif (($input['operation'] ?? '') === 'connectivity') {
+        $result = ijsbaan12Connectivity();
     } else {
         $request = ijsbaan12Request($input);
         if ($request['slug'] !== null) {

@@ -203,3 +203,25 @@ function ijsbaan12Execute(array $request): array
     curl_close($handle);
     return $result;
 }
+
+/** Fixed, read-only TCP checks; no credentials, payload or user-supplied destination. */
+function ijsbaan12Connectivity(): array
+{
+    $targets = [
+        'https_ipv4' => 'tcp://185.182.56.187:443',
+        'http_ipv4' => 'tcp://185.182.56.187:80',
+        'directadmin_ipv4' => 'tcp://185.182.56.187:2222',
+        'https_ipv6' => 'tcp://[2a0b:7280:200:0:4cf:daff:fe00:da2]:443',
+    ];
+    $results = [];
+    foreach ($targets as $name => $target) {
+        $started = microtime(true);
+        $socket = @stream_socket_client($target, $errorNumber, $error, 3, STREAM_CLIENT_CONNECT);
+        $results[$name] = ['connected' => $socket !== false, 'errno' => $errorNumber,
+            'error' => $error, 'seconds' => round(microtime(true) - $started, 3)];
+        if ($socket !== false) {
+            fclose($socket);
+        }
+    }
+    return ['ok' => true, 'connectivity' => $results];
+}
