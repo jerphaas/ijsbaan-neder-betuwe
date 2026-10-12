@@ -36,8 +36,13 @@ class Client:
         self.aes = AESGCM(existing_key())
         self.opener = build_opener(ProxyHandler({}))
         self.cookies = {}
+        self.last_request = 0.0
 
     def call(self, **fields):
+        # Shared hosting can drop bursts of short TLS connections. Pace every
+        # operation; never retry an uncertain mutation automatically.
+        time.sleep(max(0, 1.1 - (time.monotonic() - self.last_request)))
+        self.last_request = time.monotonic()
         nonce = os.urandom(12)
         payload = json.dumps({'time': int(time.time()), **fields}, ensure_ascii=False).encode()
         cipher = self.aes.encrypt(nonce, payload, CONTEXT + b':request')

@@ -36,8 +36,10 @@ def paths(client):
  return sorted({a['href'] for t,a in Elements(body).tags if t=='a' and a.get('href','').startswith('/beheer/?partners=1&edit=')})
 def read_all(client):
  rows=[]
- for path in paths(client):
-  _,body=client.request('admin-read',path=path);rows.append(clean(body));time.sleep(.06)
+ targets=paths(client)
+ for i,path in enumerate(targets):
+  _,body=client.request('admin-read',path=path);rows.append(clean(body))
+  if (i+1)%15==0:print(f'Profiles checked: {i+1}/{len(targets)}',flush=True)
  return rows
 
 def public_check(client,p,profile_id):
@@ -91,6 +93,8 @@ def main():
     intent.write_text(json.dumps({'slug':slug,'payload_sha256':r['sha256'],'started_at':datetime.now(timezone.utc).isoformat()}),encoding='utf-8')
     _,body=client.request('save',slug=slug,csrf=form['csrf'],profile_json=r['profile_json'],logo=base64.b64encode(logo).decode())
     result=json.loads(body);assert result.get('ok');profile_id=parse_qs(urlparse(result['url']).query)['edit'][0];assert re.fullmatch('sp-[0-9a-f]{24}',profile_id)
+    accepted={'slug':slug,'profile_id':profile_id,'payload_sha256':r['sha256'],'accepted_at':datetime.now(timezone.utc).isoformat()}
+    (OUT/(slug+'.accepted.json')).write_text(json.dumps(accepted),encoding='utf-8')
     _,body=client.request('admin-read',path='/beheer/?partners=1&edit='+profile_id);saved=clean(body);expected_ids.add(profile_id)
    else:profile_id=saved['profile_id']
    for field in FIELDS:assert saved.get(field,'0' if field=='logo_dark' else '')==str(p[field]),'Persisted field mismatch: '+field
@@ -114,5 +118,9 @@ def main():
   (OUT/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
   print('VERIFIED: 16 additions; 67 visible sponsors; all 52 original profiles unchanged; no duplicate, application or mail.',flush=True)
  finally:
-  _,body=client.request('admin-read',path='/beheer/?partners=1&new=1');client.request('logout',csrf=Form(body).values['csrf']);print('Admin session logged out.',flush=True)
+  try:
+   _,body=client.request('admin-read',path='/beheer/?partners=1&new=1');client.request('logout',csrf=Form(body).values['csrf']);print('Admin session logged out.',flush=True)
+  except Exception as error:
+   (OUT/'logout-incomplete.json').write_text(json.dumps({'at':datetime.now(timezone.utc).isoformat(),'error':str(error),'no_automatic_retry':True}),encoding='utf-8')
+   print('Logout could not be confirmed; connection evidence saved privately.',flush=True)
 if __name__=='__main__':main()
