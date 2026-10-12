@@ -5,7 +5,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__) . '/fictief/beursopheusden_support.php';
 require_once dirname(__DIR__) . '/includes/IjsbaanSponsors20261012.php';
 
-const IJSBAAN_12_CLOSED = false;
+const IJSBAAN_12_CLOSED = true;
 const IJSBAAN_12_CONTEXT = 'ijsbaan-sponsors-srv01-20261012-v1';
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('X-Content-Type-Options: nosniff');

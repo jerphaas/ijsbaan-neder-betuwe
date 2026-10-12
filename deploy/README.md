@@ -1,5 +1,9 @@
 # Deploy via SRV01
 
+Actuele sponsoropdracht van 12 oktober: zie [voortgang en hervatbewijs](srv01/20261012/README.md).
+Deze uitbreiding is door een hostinguitval gedeeltelijk uitgevoerd; een Git-push
+of lokale preview bewijst geen volledige live registratie.
+
 De vijf sponsors uit de opdracht van 29 september 2026 staan op
 https://ijsbaannederbetuwe.nl/. Hun opgeslagen naam, website, editie, beschrijving,
 logo en zichtbaarheid zijn gecontroleerd. Iedere sponsor staat eenmaal in de

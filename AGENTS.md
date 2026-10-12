@@ -43,3 +43,14 @@
   incidentroute en stel normale codepublicatie niet gelijk aan profielopslag.
 
 - Bij niet-bereikbare hosting vanaf de pc: gebruik de op 1 oktober 2026 bewezen SRV01 + DirectAdmin-route uit deploy/DIRECTADMIN-SRV01.md. De bestaande .deploy/ftp-login.dpapi werkt ook voor DirectAdmin. De gebruiker keurde deze bestaande HTTP-route expliciet goed en vroeg hergebruik vast te leggen; stel dezelfde routevraag niet telkens opnieuw. Gebruik path= voor lezen, multipart voor upload, private geverifieerde backups, bronhashconflictdetectie en verse HTTPS-eindcontrole. Beperk publicatie tot de gevraagde websitebestanden, sluit tijdelijke helpers, geen database/mail/config-mutaties. De oorspronkelijke 29-september-route blijft gesloten.
+
+- Sponsoropdracht Foto 1 van 12 oktober 2026: de exacte voortgang en hervatroute
+  staan in `deploy/srv01/20261012/README.md`; private pogingen en ontvangsten in
+  `.deploy/srv01/2026-10-12/`. Combinatie Mauritz stond al op de site. De hosting
+  viel tijdens de uitvoering uit; beoordeel de negen nog niet volledig
+  geverifieerde pending-profielen tegen actuele opslag, nooit alleen tegen de
+  lokale preview. Village Collection kreeg al een opslagbevestiging en mag niet
+  blind opnieuw worden toegevoegd. De tijdelijke route is gesloten. Hergebruik
+  de procedure en bestaande credentials, begrens het verzoektempo en leg een
+  opslagbevestiging vast vóór het daaropvolgende leesverzoek. Dit verleent geen
+  ruimere toegang of toestemming voor aanvragen, mail of beveiligingswijzigingen.

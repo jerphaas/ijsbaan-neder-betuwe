@@ -59,3 +59,18 @@ en bewijst uitdrukkelijk geen volledige live registratie.
 SEO, sponsorcatalogus, Python-syntax, PHP-syntax en elf gerichte scopetests slagen.
 GitHub Pages is een afzonderlijke kopie; de primaire hostingworkflow is niet
 geactiveerd. De statische hostingversie verandert niet door profielbeheer.
+
+## Sluiting
+
+De tijdelijke route is op 12 oktober 2026 expliciet gesloten; HTTP 410 is live
+bevestigd en `IJSBAAN_12_CLOSED=true` is gecommit/gepusht. Dit sluit de
+hulproute, maar maakt de onvolledige sponsoruitbreiding niet afgerond.
+Dashboardcommit voor de permanente sluiting: `f44c9120d`.
+
+De pc-browser bevestigt eveneens `ERR_CONNECTION_TIMED_OUT` op het primaire
+domein. Herstel van de hostingverbinding is de concrete resterende voorwaarde.
+Bij hervatten: een nieuwe begrensde taakidentiteit, eerst alle actuele profielen
+teruglezen, Village Collection controleren en uitsluitend werkelijk ontbrekende
+namen toevoegen. Daarna de oorspronkelijke profielen, publieke blokken, logo's,
+mailtellers en homepage opnieuw vergelijken. Archiveer ieder lokaal wachtend
+bestand pas na die sponsor zijn volledige live terugleescontrole.
