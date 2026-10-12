@@ -67,7 +67,6 @@ class Client:
                     'connection': result.get('connection'), 'error': result.get('error')}
             report = SITE / '.deploy/srv01/2026-10-12/connection-failure.json'
             report.parent.mkdir(parents=True, exist_ok=True)
-            report.parent.mkdir(parents=True, exist_ok=True)
             report.write_text(json.dumps(safe, indent=2), encoding='utf-8')
             raise RuntimeError('SRV01 operation failed: ' + json.dumps(safe))
         for header in result.get('headers', {}).get('set-cookie', []):
