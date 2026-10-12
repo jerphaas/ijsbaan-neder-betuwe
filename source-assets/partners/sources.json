@@ -296,5 +296,66 @@
     "name": "Heeren van Opheusden",
     "source": "https://heerenvanopheusden.nl/wp-content/uploads/2025/08/Beeldmerk-2-Champagne.svg",
     "file": "heeren-van-opheusden.svg"
+  },
+  {
+    "id": "willem-designvloeren",
+    "name": "Willem Designvloeren",
+    "source": "https://www.willemdesignvloeren.nl/wp-content/themes/willemdesignvloeren/dist/logo.svg",
+    "file": "willem-designvloeren.svg"
+  },
+  {
+    "id": "hk-vastgoed",
+    "name": "HK Vastgoed Rhenen",
+    "source": "https://www.hkvastgoed.nl/image/logo/4e656981-d186-4797-b3a4-6b52d6f369d4?rev=1791795132",
+    "file": "hk-vastgoed.svg"
+  },
+  {
+    "id": "van-roekel-optiek",
+    "name": "Van Roekel Optiek",
+    "source": "https://primary.jwwb.nl/public/j/c/i/temp-kluzshpmyahuohnjjszs/van-roekel-optiek-logo_rgb-high.png",
+    "file": "van-roekel-optiek.png"
+  },
+  {
+    "id": "hdv-wonen",
+    "name": "HDV Wonen",
+    "source": "https://1db37760b5.clvaw-cdnwnd.com/d3baae5a7bc138d9d17b2de5966e8199/200000002-6796567968/HDV_logo_zwart_transparant.png?ph=1db37760b5",
+    "file": "hdv-wonen.png"
+  },
+  {
+    "id": "mvl-dodewaard",
+    "name": "MVL Dodewaard",
+    "source": "https://cdn.prod.website-files.com/62fbaeacae84b7ed76c1fcda/62fbaeacae84b7c7bbc1fcf9_Logo.svg",
+    "file": "mvl-dodewaard.svg"
+  },
+  {
+    "id": "village-collection",
+    "name": "Village Collection",
+    "source": "https://villagecollection.nl/cdn/shop/files/logo_2_200x@2x.png?v=1614397889",
+    "file": "village-collection.png"
+  },
+  {
+    "id": "plantenbakken-en-zo",
+    "name": "Plantenbakken & Zo",
+    "source": "https://cdn.webshopapp.com/shops/23075/themes/181324/assets/logo-big.svg?20260930134516",
+    "file": "plantenbakken-en-zo.svg"
+  },
+  {
+    "id": "joop-van-mourik",
+    "name": "Joop van Mourik Makelaars",
+    "source": "https://www.joopvanmourik.nl/wp-content/uploads/2022/03/logo.png",
+    "file": "joop-van-mourik.png"
+  },
+  {
+    "id": "van-gessel-groep",
+    "name": "Van Gessel Groep",
+    "source": "https://gesselgroep.nl/site/wp-content/uploads/GG_logo_wit.png",
+    "file": "van-gessel-groep.png"
+  },
+  {
+    "id": "etos-roelofsen",
+    "name": "Etos Roelofsen",
+    "source": "https://www.etos.nl/",
+    "file": "etos-roelofsen.svg",
+    "note": "Origineel inline Etos-logo uit de publieke websiteheader."
   }
 ]
