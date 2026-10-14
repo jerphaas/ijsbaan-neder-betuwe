@@ -54,3 +54,10 @@
   de procedure en bestaande credentials, begrens het verzoektempo en leg een
   opslagbevestiging vast vóór het daaropvolgende leesverzoek. Dit verleent geen
   ruimere toegang of toestemming voor aanvragen, mail of beveiligingswijzigingen.
+
+- B&P-logo, 14 oktober 2026: zie `deploy/srv01/20261014/README.md`. De schone
+  originele EPS en geoptimaliseerde WebP zijn bewaard. De hosting is vanuit pc
+  en SRV01 onbereikbaar; geen upload geprobeerd. De exacte update staat privé in
+  `.deploy/pending-logo-updates/excel-2026-11.json`: uitsluitend het logo op het
+  bestaande profiel, nooit een nieuwe sponsor. Lees eerst de actuele revision.
+  De tijdelijke leesroute is gesloten; Git-push bewijst geen live logo-opslag.

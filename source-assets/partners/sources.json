@@ -357,5 +357,14 @@
     "source": "https://www.etos.nl/",
     "file": "etos-roelofsen.svg",
     "note": "Origineel inline Etos-logo uit de publieke websiteheader."
+  },
+  {
+    "id": "excel-2026-11",
+    "name": "B&P Boomkwekerijen",
+    "source": "Door de opdrachtgever aangeleverde EPS, 14 oktober 2026",
+    "file": "excel-2026-11.eps",
+    "rendered_file": "excel-2026-11.png",
+    "asset": "assets/partners/excel-2026-11-cbbfb80fb1.webp",
+    "note": "Origineel EPS zonder de roze drukcontour uit de alternatieve JPG-bijlage; kleuren, verhoudingen en website behouden."
   }
 ]
