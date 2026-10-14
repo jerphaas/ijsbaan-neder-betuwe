@@ -44,20 +44,26 @@
 
 - Bij niet-bereikbare hosting vanaf de pc: gebruik de op 1 oktober 2026 bewezen SRV01 + DirectAdmin-route uit deploy/DIRECTADMIN-SRV01.md. De bestaande .deploy/ftp-login.dpapi werkt ook voor DirectAdmin. De gebruiker keurde deze bestaande HTTP-route expliciet goed en vroeg hergebruik vast te leggen; stel dezelfde routevraag niet telkens opnieuw. Gebruik path= voor lezen, multipart voor upload, private geverifieerde backups, bronhashconflictdetectie en verse HTTPS-eindcontrole. Beperk publicatie tot de gevraagde websitebestanden, sluit tijdelijke helpers, geen database/mail/config-mutaties. De oorspronkelijke 29-september-route blijft gesloten.
 
-- Sponsoropdracht Foto 1 van 12 oktober 2026: de exacte voortgang en hervatroute
-  staan in `deploy/srv01/20261012/README.md`; private pogingen en ontvangsten in
-  `.deploy/srv01/2026-10-12/`. Combinatie Mauritz stond al op de site. De hosting
-  viel tijdens de uitvoering uit; beoordeel de negen nog niet volledig
-  geverifieerde pending-profielen tegen actuele opslag, nooit alleen tegen de
-  lokale preview. Village Collection kreeg al een opslagbevestiging en mag niet
-  blind opnieuw worden toegevoegd. De tijdelijke route is gesloten. Hergebruik
-  de procedure en bestaande credentials, begrens het verzoektempo en leg een
-  opslagbevestiging vast vóór het daaropvolgende leesverzoek. Dit verleent geen
-  ruimere toegang of toestemming voor aanvragen, mail of beveiligingswijzigingen.
+- Sponsoropdracht Foto 1 van 12 oktober is op 14 oktober 2026 volledig live
+  afgerond: 16 toevoegingen en behoud van Combinatie Mauritz, 68 opgeslagen
+  profielen en 67 zichtbaar. Village Collection was al opgeslagen en is niet
+  herhaald. Alle negen wachtende dossiers zijn na teruglezen gearchiveerd;
+  `.deploy/pending-sponsors/` is leeg. Zie `deploy/srv01/20261012/README.md` en
+  de private eindbewijzen in `.deploy/sponsor-completion-warp-20261014/`.
+  De oude SRV01-route blijft gesloten. Behoud de naam/website/editie-dubbelcontrole
+  en sla een ontvangst direct op vóór volgende leesverzoeken. Geen nieuwe
+  aanvraag of mail voor handmatige toevoegingen.
 
-- B&P-logo, 14 oktober 2026: zie `deploy/srv01/20261014/README.md`. De schone
-  originele EPS en geoptimaliseerde WebP zijn bewaard. De hosting is vanuit pc
-  en SRV01 onbereikbaar; geen upload geprobeerd. De exacte update staat privé in
-  `.deploy/pending-logo-updates/excel-2026-11.json`: uitsluitend het logo op het
-  bestaande profiel, nooit een nieuwe sponsor. Lees eerst de actuele revision.
-  De tijdelijke leesroute is gesloten; Git-push bewijst geen live logo-opslag.
+- B&P-logo is op 14 oktober 2026 live opgeslagen op het bestaande profiel
+  `excel-2026-11`, revision 2, en gecontroleerd op desktop/mobiel. Geen duplicaat
+  of mail; alle andere profielvelden bleven gelijk. Zie
+  `deploy/srv01/20261014/README.md` voor bron en bewijs. De eerdere melding
+  "nog niet geüpload" is historisch; lees het actuele profiel vóór iedere wijziging.
+- Bij de verbindingsblokkade op 14 oktober werkte de door de gebruiker gevraagde
+  tijdelijke Cloudflare WARP-proxy op `127.0.0.1:40000`. Alleen het aangewezen
+  proces gebruikte SOCKS5 met normale TLS; de algemene pc-route veranderde niet.
+  De tijdelijke client en taakregistratie zijn na de controle volledig verwijderd.
+  Bestaande DPAPI-credentials bleven lokaal. Zie de bovenstaande documentatie
+  voor de concrete gebruikerskeuze, verificatie en tijdelijke-installatiegrens.
+  Gebruik dit bewijs bij een volgende diagnose; maak niet opnieuw tijdelijke
+  serverhelpers voor dezelfde netwerkfout en heropen geen gesloten incidentroute.

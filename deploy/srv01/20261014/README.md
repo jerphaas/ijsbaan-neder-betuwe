@@ -23,42 +23,74 @@ Gebruik daarom de EPS, niet een uitsnede uit de screenshot of de e-mailhandteken
   `52a91b8bf09298788d7a57b9206127026c23eacd75405f0a131e26dc381dce50`.
   Bron: https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/tag/gs10080.
 
-## Werkelijke afleverstatus
+## Afgeleverd op 14 oktober 2026
 
-**Voorbereid en lokaal gecontroleerd; nog niet online geplaatst.** De pc en
-SRV01 bereiken de primaire hosting niet. DNS bevestigt 185.182.56.187;
-HTTPS vanaf SRV01 geeft cURL 28 vóór TCP/TLS. De vaste IPv4-poorten 443, 80 en
-2222 en IPv6-poort 443 lopen ook vast. Dit is geen bewijs van een wereldwijde
-storing. Er is geen beheerlogin of logo-upload geprobeerd en geen sponsor
-bijgemaakt. GitHub Pages-publicatie is geen bewijs van de wijziging op de
-primaire website of in de sponsordatabase.
+Het originele B&P-logo is via het bestaande sponsorbeheer opgeslagen op profiel
+`excel-2026-11`, van revision 1 naar 2. Naam, website, bijdrage, editie, volgorde,
+zichtbaarheid en overige profielvelden zijn exact behouden. Bij deze B&P-wijziging geen nieuw profiel,
+sponsoraanvraag of mail aangemaakt. B&P staat eenmaal in de sponsorstrook en eenmaal
+in het volledige overzicht. De verse primaire homepage en publieke afbeelding
+zijn teruggelezen; de live WebP is 236 × 180 pixels met transparantie.
 
-De tijdelijke SRV01-route was uitsluitend lezen, met bestaande credentials,
-AES-GCM, vaste bestemmingen en TLS-controle. Geen vrije proxy, writes of mail.
-Na de diagnose gesloten; constante `IJSBAAN_14_CLOSED=true` en HTTP 410 bevestigd.
-Dashboardcommit voor sluiting: `de98c5303`.
+Publiek logo: https://ijsbaannederbetuwe.nl/api/partners.php?logo=excel-2026-11&v=2
 
-## Veilige vervolgactie
+De openbare WebP wordt door de bestaande backend opnieuw gecodeerd. De zichtbare
+pixels zijn op witte én zwarte achtergrond vergeleken met de geoptimaliseerde
+bron (maximale RMS 1,78); ook de transparantie is gecontroleerd. Onzichtbare RGB
+in volledig transparante pixels is geen betrouwbare vergelijking na hercodering.
+De opslagbevestiging is bewaard vóór de controle. Er is eenmaal geüpload.
 
-De exacte wachtende update staat privé in
-`.deploy/pending-logo-updates/excel-2026-11.json`. Dit is een **logo-update**, geen
-wachtende sponsortoevoeging. De oude route mag niet worden heropend.
+De echte publieke pagina is op desktop (1280 × 900) en mobiel (390 × 844)
+via een uitsluitend lokaal, alleen-lezen venster op de live hosting gecontroleerd.
+Het logo laadt, behoudt zijn verhouding en veroorzaakt geen horizontale overloop.
+Dit venster gebruikt verse HTTPS-antwoorden van de hosting; geen lokaal aangepaste
+sponsorpreview. Bronhashes staan bij het private controlebewijs.
 
-1. Controleer verse hostingbereikbaarheid via de normale route.
-2. Lees het huidige B&P-profiel en de actuele `revision` via sponsorbeheer;
-   controleer unieke bedrijfsnaam/website/identiteit. Bewaar de oude velden privé.
-3. Upload uitsluitend deze WebP op dit bestaande profiel. Behoud naam, website,
-   privébijdrage, editie, volgorde en zichtbaarheid. Geen sponsoraanvraag of mail.
-4. Bewaar de opslagbevestiging onmiddellijk. Bij een onzekere uitkomst eerst
-   teruglezen, nooit blind opnieuw uploaden of een profiel bijmaken.
-5. Lees profiel, publieke sponsorblokken en afbeelding vers terug. B&P moet
-   eenmaal per blok voorkomen. Vergelijk overige velden en mailtellers.
-6. Controleer desktop/mobiel en archiveer de wachtende update pas na live bewijs.
+## Opgeloste verbindingsblokkade
 
-Lokale browsercontrole: bestaande pagina met uitsluitend het B&P-logo vervangen,
-1280 × 900 en 390 × 844, geen overloop, afbeelding geladen, één vermelding per
-blok. Volledige slidercyclus van de bewaarde 51 sponsors per zichtbare pagina
-gecontroleerd, inclusief laatste pagina en terugkeer. Dit is lokale QA, geen
-actuele live sponsorstand. Bewijs in `work/bp-logo-20261014/browser-check.json`.
-SEO en sponsorcatalogus slagen. Private netwerkbewijzen staan in
-`.deploy/srv01/2026-10-14/`; mailinhoud en private profielvelden staan niet in Git.
+De eerste pc- en SRV01-pogingen liepen vóór TCP/TLS vast. De gebruiker bevestigde
+dat de website via 4G/5G wel opende en vroeg op 14 oktober om een tijdelijke
+VPN-achtige route. De oorzaak van het verschil per netwerk is niet vastgesteld.
+
+De officiële, geldig door Cloudflare ondertekende WARP-client is tijdelijk
+geïnstalleerd. De gebruiker gaf expliciet akkoord op de gratis dienstvoorwaarden,
+uitsluitend tijdelijk gebruik voor deze IJsbaan-publicatie en verwijderen na
+controle. `warp-cli mode proxy` met poort 40000 gaf `WarpProxy` en
+`Packet Tunnel: false`; de luisterpoort was alleen `127.0.0.1`.
+
+Alleen het upload- en verificatieproces gebruikte
+`curl --proxy socks5h://127.0.0.1:40000`, met gewone TLS-certificaatcontrole en
+zonder automatische herhaling van onzekere writes. Credentials kwamen uit de
+bestaande lokale DPAPI-bestanden en bleven lokaal/in het procesgeheugen; niets
+naar GitHub-secrets, een publieke helper of een extern proxyformulier gekopieerd.
+De bestaande tijdelijke SRV01-routes zijn gesloten gebleven.
+
+Niet opnieuw uploaden op basis van de oude momentopname zonder logo. Het actuele
+profiel heeft revision 2. Private bewijzen:
+`.deploy/bp-logo-warp-20261014/verified.json`, `upload-response.json`,
+`profile-before.html`, `profile-after.html`, `public-after.json`,
+`home-after.html`, `browser-source-checks.json` en `proxy-proof.json`.
+Deze bestanden bevatten waar nodig private profielgegevens en blijven buiten Git.
+
+De logo-assets zijn eerder gecommit in `5826f67`; een Git-push alleen veranderde
+het databaseprofiel niet. Deze beheerwijziging heeft de statische siteversie niet
+veranderd. De primaire hostingworkflow blijft apart van de uitgevoerde opslag.
+
+## Afronding en opruiming
+
+Ook de oorspronkelijke sponsorlijst van 12 oktober is via dezelfde verbinding
+volledig afgerond: zie `../20261012/README.md`. Het eindoverzicht bevat 67 zichtbare
+sponsors en 60 geladen logo's. De volledige carrousel is geverifieerd op desktop
+(17 pagina's, inclusief 64–67 en terugkeer) en mobiel (34 pagina's, inclusief
+66–67 en terugkeer). Geen kapotte afbeeldingen of horizontale overloop.
+
+Het wachtende B&P-dossier en de negen sponsorwachtdossiers zijn pas na controle
+privé gearchiveerd; beide wachtrijen zijn leeg. Beheersessies zijn uitgelogd.
+De WARP-verbinding en de taakregistratie zijn verwijderd en de MSI-deïnstallatie
+is met exitcode 0 voltooid. WARP-service, programma, productregistratie en de
+luisterpoorten 40000/8767 zijn daarna afwezig bevestigd. Bewijs:
+`browser-verified.json`, `cleanup.json` en de private uninstall-log.
+
+Dit was een tijdelijke route voor de door de gebruiker gevraagde IJsbaan-wijzigingen;
+er is geen permanente VPN of nieuwe hostingcredential achtergelaten. De oorzaak
+van de oorspronkelijke netwerkafhankelijke onbereikbaarheid is niet gewijzigd.

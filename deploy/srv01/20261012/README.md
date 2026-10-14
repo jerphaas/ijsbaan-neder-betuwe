@@ -6,6 +6,43 @@ met dezelfde website; het bestaande profiel blijft ongewijzigd. De overige 16
 profielen zijn begrensd op exacte naam, website, editie, originele logo en privébijdrage.
 Bedragen en bronnotities staan uitsluitend in de genegeerde `.deploy/`-map.
 
+## Afgerond op 14 oktober 2026
+
+De hele opdracht is nu live uitgevoerd en gecontroleerd. Alle 17 bedrijven uit
+Foto 1 staan precies eenmaal in beide publieke sponsorblokken: 16 toevoegingen,
+met behoud van het reeds aanwezige Combinatie Mauritz B.V. Village Collection
+bleek bij de verse controle al opgeslagen en is niet opnieuw aangemaakt.
+De laatste acht ontbrekende profielen zijn afzonderlijk opgeslagen en teruggelezen.
+
+Eindstand: 68 opgeslagen profielen, waarvan 67 zichtbaar. De oorspronkelijke
+52 profielen behouden hun velden; alleen de afzonderlijk gevraagde B&P-logo-update
+verhoogde `excel-2026-11` van revision 1 naar 2. Namen, websites, bijdragen,
+edities, volgorde en zichtbaarheid zijn tegen de bron en oorspronkelijke opslag
+gecontroleerd. Er zijn geen aanvragen of mails aangemaakt.
+
+De gebruiker vroeg een tijdelijke VPN-achtige route omdat de site via 4G/5G wel
+bereikbaar was. De expliciet goedgekeurde lokale WARP-proxy werkte met normale
+TLS-controle en bestaande lokale DPAPI-credentials. Er is geen afgesloten
+SRV01-route heropend. De tijdelijke client en taakregistratie zijn na verificatie
+verwijderd; zie `../20261014/README.md` voor de afgebakende route en opruiming.
+
+De echte pagina is via die verbinding gecontroleerd op 1280 × 900 en 390 × 844.
+Alle 67 sponsors doorlopen de carrousel; laatste pagina en terugkeer zijn op beide
+formaten gecontroleerd. Alle 60 logo's in het overzicht laden, zonder kapotte
+afbeeldingen of horizontale overloop.
+
+Private eindbewijzen staan in `.deploy/sponsor-completion-warp-20261014/`, met
+originele manifesthashes, afzonderlijke opslagontvangsten, 68 teruggelezen profielen,
+publieke blokken, homepage, mailtellers en `verification.json`. De negen resterende
+wachtdossiers zijn na hun controle gearchiveerd in
+`.deploy/completed-sponsors/2026-10-14/`; `.deploy/pending-sponsors/` is leeg.
+Geen private bedragen of bronnotities zijn naar Git verplaatst.
+
+## Historie van de onderbreking op 12 oktober
+
+Onderstaande beschrijving bewaart het eerdere incidentbewijs. De toenmalige
+wachtstatus en onbereikbaarheid zijn niet de huidige afleverstatus.
+
 ## Uitvoering en onderbreking
 
 Zeven toevoegingen zijn opgeslagen en afzonderlijk teruggelezen: Etos Roelofsen,
