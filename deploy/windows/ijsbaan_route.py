@@ -1,4 +1,4 @@
-"""User-scoped Windows PAC setup. Only the IJsbaan hosts use existing WARP.
+"""User-scoped Windows PAC setup. Only explicit hosts in ijsbaan.pac use WARP.
 
 No credentials, certificates, firewall rules, or machine-wide tunnels are changed.
 The server serves only a fixed PAC and health response, never arbitrary files.
@@ -6,9 +6,11 @@ The server serves only a fixed PAC and health response, never arbitrary files.
 import argparse
 import ctypes as C
 from ctypes import wintypes as W
+import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import socket
 import subprocess
 import sys
@@ -22,7 +24,8 @@ STATE = ROOT / '.deploy' / 'windows-ijsbaan-route'
 BACKUP = STATE / 'before.json'
 ENABLED = STATE / 'enabled'
 PAC = Path(__file__).with_name('ijsbaan.pac')
-URL = 'http://127.0.0.1:40001/ijsbaan.pac'
+URL_BASE = 'http://127.0.0.1:40001/ijsbaan.pac'
+URL = URL_BASE + '?v=' + hashlib.sha256(PAC.read_bytes()).hexdigest()[:12]
 RUN_KEY = r'Software\Microsoft\Windows\CurrentVersion\Run'
 RUN_NAME = 'IJsbaanDomainRoute'
 WARP = Path(os.environ.get('ProgramFiles', r'C:\Program Files')) / 'Cloudflare/Cloudflare WARP/warp-cli.exe'
@@ -94,6 +97,11 @@ def set_run(value):
             winreg.SetValueEx(key, RUN_NAME, 0, value['kind'], value['value'])
 
 
+def is_our_url(url):
+    # Accept earlier revisions for safe upgrades/restores, never other PAC URLs.
+    return re.fullmatch(re.escape(URL_BASE) + r'(?:\?v=[0-9a-f]{12})?', url) is not None
+
+
 def warp(*args):
     result = subprocess.run([str(WARP), '--accept-tos', *args], capture_output=True,
                             text=True, timeout=15, creationflags=subprocess.CREATE_NO_WINDOW)
@@ -123,10 +131,11 @@ class Handler(BaseHTTPRequestHandler):
         if self.headers.get('Host') != '127.0.0.1:40001':
             self.send_error(403)
             return
-        if self.path == '/ijsbaan.pac':
+        path = self.path.split('?', 1)[0]
+        if path == '/ijsbaan.pac':
             body, mime = PAC.read_bytes(), 'application/x-ns-proxy-autoconfig'
             self.server.pac_requests += 1
-        elif self.path == '/health':
+        elif path == '/health':
             body = json.dumps({'service': RUN_NAME, 'pid': os.getpid(),
                                'pac_requests': self.server.pac_requests}).encode()
             mime = 'application/json'
@@ -175,7 +184,7 @@ def serve():
 
 def install():
     current = proxy_settings()
-    if current['url'] not in ('', URL) or current['flags'] & 2:
+    if (current['url'] and not is_our_url(current['url'])) or current['flags'] & 2:
         raise RuntimeError('Existing proxy configuration requires review; nothing changed')
     assert_proxy_mode()
     pythonw = Path(sys.executable).with_name('pythonw.exe')
@@ -187,7 +196,7 @@ def install():
         raise RuntimeError('Startup entry belongs to another configuration')
     STATE.mkdir(parents=True, exist_ok=True)
     if not BACKUP.exists():
-        if current['url'] == URL:
+        if is_our_url(current['url']):
             raise RuntimeError('Refusing to overwrite a missing original backup')
         BACKUP.write_text(json.dumps({'proxy': current, 'run': old_run}, indent=2))
     ENABLED.touch()
@@ -202,6 +211,10 @@ def install():
             time.sleep(1)
         else:
             raise RuntimeError('PAC helper did not start; proxy settings unchanged')
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    with opener.open(URL, timeout=3) as response:
+        if response.read() != PAC.read_bytes():
+            raise RuntimeError('Served PAC differs; proxy settings unchanged')
     try:
         set_run({'value': command, 'kind': winreg.REG_SZ})
         proxy_settings({'flags': 5, 'url': URL})  # DIRECT | AUTO_PROXY_URL
@@ -215,7 +228,7 @@ def install():
 
 
 def restore():
-    if proxy_settings()['url'] != URL:
+    if not is_our_url(proxy_settings()['url']):
         raise RuntimeError('Proxy changed since installation; refusing to overwrite')
     before = json.loads(BACKUP.read_text())
     proxy_settings(before['proxy'])

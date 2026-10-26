@@ -1,4 +1,4 @@
-# WARP behouden voor geautoriseerd IJsbaanbeheer
+# WARP behouden voor IJsbaan en Tree Centre Opheusden
 
 ## Gebruikerskeuze en actuele status
 
@@ -12,6 +12,20 @@ eerdere afspraak om na iedere taak te disconnecten. Het autoriseert geen
 ongevraagde websitewijzigingen, externe berichten, andere systemen/domeinen
 of een VPN-tunnel voor de hele pc.
 
+Op aansluitend verzoek is ook Tree Centre Opheusden aan dezelfde domeinregel
+toegevoegd: direct opnieuw een HTTPS-time-out, via de bestaande WARP-proxy
+met normale certificaatcontrole HTTP 200. Deze uitbreiding geldt uitsluitend
+voor `treecentreopheusden.nl` en `www.treecentreopheusden.nl`.
+
+**Tree Centre is nog niet betrouwbaar bereikbaar vanaf deze pc.** Na de
+eerste HTTP 200 liepen ook volgende WARP-verzoeken vast vóór TLS, bij de
+CONNECT-tunnel. Dit gold voor HTTP-proxy, SOCKS5 en het DNS-bevestigde
+hostingadres, ook na één WARP-herverbinding. De gewone ingebouwde browser
+toonde `ERR_CONNECTION_TIMED_OUT`. Een onafhankelijke webcontrole kon de
+publieke homepage wel lezen. De exacte oorzaak buiten de lokale proxy is
+niet vastgesteld; concludeer niet dat de hele site offline is of dat deze
+toevoeging het probleem al heeft opgelost. IJsbaan bleef HTTP 200 geven.
+
 Gecontroleerde installatie: `C:/Program Files/Cloudflare/Cloudflare WARP/`,
 `warp-cli 2026.8.2110.0`, Windows-service `CloudflareWARP`. De bestaande officiële
 MSI heeft een geldige Cloudflare-handtekening; installatie eindigde met code 0.
@@ -22,7 +36,8 @@ op 40000 (WARP) en 40001 (PAC-helper). Tijdelijke viewer 8767 is gestopt.
 ## Automatische browserroute op deze pc
 
 `deploy/windows/ijsbaan.pac` stuurt uitsluitend de exacte hosts
-`ijsbaannederbetuwe.nl` en `www.ijsbaannederbetuwe.nl` via
+`ijsbaannederbetuwe.nl`, `www.ijsbaannederbetuwe.nl`, `treecentreopheusden.nl`
+en `www.treecentreopheusden.nl` via
 `PROXY 127.0.0.1:40000; DIRECT`. Alle andere hosts, inclusief OpenAI en
 bedrijfs-/LAN-adressen, krijgen `DIRECT`. De regel geldt voor het hele domein,
 dus ook afbeeldingen en `/beheer/`; een URL-fragment zoals `#onze-sponsors`
@@ -31,13 +46,22 @@ verbinding de terugvalroute. Apps met eigen proxy-instellingen kunnen de
 Windows-instelling negeren; CLI-processen gebruiken zo nodig expliciet WARP.
 
 Windows-gebruiker `huver`: automatische configuratie
-`http://127.0.0.1:40001/ijsbaan.pac`, via de ondersteunde WinINet-API ingesteld
+`http://127.0.0.1:40001/ijsbaan.pac?v=<inhoudshash>`, via de ondersteunde WinINet-API ingesteld
 en teruggelezen. De vooraf bestaande instelling (flags 9, lege PAC-URL) en de
 oorspronkelijke eigen opstartwaarde staan lokaal in
 `.deploy/windows-ijsbaan-route/before.json`; deze backup blijft behouden.
 De lokale helper serveert alleen de vaste PAC en een beperkte status,
 luistert uitsluitend op loopback en registreert geen browsegeschiedenis.
 Er is geen firewall-, DNS-, router- of certificaatwijziging.
+
+Na uitbreiding bleek de browser de oude PAC te bewaren: de helper ontving
+geen nieuwe PAC-aanvragen. `install` neemt daarom de eerste 12 hextekens van
+de SHA-256 van de PAC op in de configuratie-URL en controleert vóór instellen
+dat de lokaal geserveerde inhoud exact overeenkomt. De helper accepteert de
+versiequery op zijn vaste PAC-pad. Oude eigen PAC-versies blijven herkenbaar
+voor upgraden/herstellen; andere proxyconfiguraties worden niet overschreven.
+Dit vernieuwen is met nieuwe PAC-aanvragen bevestigd, maar verhielp niet de
+hierboven beschreven resterende Tree Centre-transportfout.
 
 HKCU Run `IJsbaanDomainRoute` start de bestaande `C:/Python314/pythonw.exe`
 met `deploy/windows/ijsbaan_route.py serve`. Bij aanmelden controleert de

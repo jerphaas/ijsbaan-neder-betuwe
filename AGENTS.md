@@ -65,7 +65,8 @@
   bestaande registratie, geen `registration new` of herinstallatie als standaard.
   Later die dag vroeg de gebruiker de IJsbaan standaard via Cloudflare te openen.
   Op deze pc staat daarom een per-gebruiker PAC-regel: uitsluitend
-  `ijsbaannederbetuwe.nl` en `www.ijsbaannederbetuwe.nl` via de lokale WARP-proxy
+  `ijsbaannederbetuwe.nl`, `www.ijsbaannederbetuwe.nl`,
+  `treecentreopheusden.nl` en `www.treecentreopheusden.nl` via de lokale WARP-proxy
   `127.0.0.1:40000`, met gewone TLS-controle; alle andere hosts DIRECT. Gebruik
   HTTP CONNECT (`PROXY`) voor de browserregel; SOCKS5 werkte in Chrome, maar
   de ingebouwde browser werkte pas na omschakeling naar HTTP CONNECT.
@@ -73,7 +74,13 @@
   aanmelden via HKCU Run `IJsbaanDomainRoute`. De PAC-helper luistert uitsluitend
   op `127.0.0.1:40001`. Behoud `WarpProxy` en `Packet Tunnel false`; WARP nu NIET
   meer standaard uitschakelen na een taak. Geen volledige pc-tunnel, nieuwe
-  registratie of uitbreiding naar andere domeinen. Werkwijze en herstel:
+  registratie of ongevraagde uitbreiding naar andere domeinen. Tree Centre is
+  op aansluitend gebruikersverzoek toegevoegd na dezelfde directe time-out en
+  een aanvankelijk geslaagde WARP-controle. Let op: vervolgcontroles voor Tree
+  Centre bleven ook via WARP steken vóór TLS (CONNECT-time-out); de gewone
+  browser is hiervoor nog NIET werkend bewezen. IJsbaan bleef wel werken.
+  PAC-URLs bevatten nu een inhoudshash zodat een gewijzigde domeinlijst niet
+  in de browsercache blijft hangen. Werkwijze, beperking en herstel:
   `deploy/WARP-HERGEBRUIK.md`.
   Bestaande DPAPI-credentials blijven lokaal. Maak geen tijdelijke serverhelpers
   voor dezelfde netwerkfout en heropen geen gesloten incidentroute.
