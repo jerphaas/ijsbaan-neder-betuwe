@@ -63,10 +63,18 @@
   de installatie en apparaatregistratie nu uitdrukkelijk BEWAREN voor hergebruik;
   dit vervangt de tijdelijke-installatiegrens van 14 oktober. Hergebruik de
   bestaande registratie, geen `registration new` of herinstallatie als standaard.
-  Gebruik voor geautoriseerde IJsbaan-taken alleen de lokale SOCKS5-proxy op
-  `127.0.0.1:40000`, met gewone TLS-controle en uitsluitend het aangewezen proces.
-  Na afloop `disconnect`, geen uninstall of registratieverwijdering. Laat de
-  algemene pc-route ongewijzigd. Werkwijze en bewijs: `deploy/WARP-HERGEBRUIK.md`.
+  Later die dag vroeg de gebruiker de IJsbaan standaard via Cloudflare te openen.
+  Op deze pc staat daarom een per-gebruiker PAC-regel: uitsluitend
+  `ijsbaannederbetuwe.nl` en `www.ijsbaannederbetuwe.nl` via de lokale WARP-proxy
+  `127.0.0.1:40000`, met gewone TLS-controle; alle andere hosts DIRECT. Gebruik
+  HTTP CONNECT (`PROXY`) voor de browserregel; SOCKS5 werkte in Chrome, maar
+  de ingebouwde browser werkte pas na omschakeling naar HTTP CONNECT.
+  `deploy/windows/ijsbaan_route.py` biedt status/install/restore en start bij
+  aanmelden via HKCU Run `IJsbaanDomainRoute`. De PAC-helper luistert uitsluitend
+  op `127.0.0.1:40001`. Behoud `WarpProxy` en `Packet Tunnel false`; WARP nu NIET
+  meer standaard uitschakelen na een taak. Geen volledige pc-tunnel, nieuwe
+  registratie of uitbreiding naar andere domeinen. Werkwijze en herstel:
+  `deploy/WARP-HERGEBRUIK.md`.
   Bestaande DPAPI-credentials blijven lokaal. Maak geen tijdelijke serverhelpers
   voor dezelfde netwerkfout en heropen geen gesloten incidentroute.
 - Windkracht 10 Producties is op 26 oktober 2026 live toegevoegd vanuit de

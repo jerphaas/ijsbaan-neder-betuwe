@@ -4,18 +4,76 @@
 
 Op 26 oktober 2026 vroeg de gebruiker Cloudflare WARP geïnstalleerd te laten
 voor hergebruik. Daarna gaf hij expliciet toestemming: **“Ja, registreren en
-bewaren”** voor de gratis apparaatregistratie bij Cloudflare. Na de taak gaat
-de verbinding uit; client en bestaande registratie blijven bewaard. Dit
-vervangt alleen de tijdelijke-installatiegrens van de opdracht van 14 oktober.
-Het autoriseert geen ongevraagde websitewijzigingen, externe berichten, andere
-systemen of verruiming van netwerk-/beveiligingsinstellingen.
+bewaren”** voor de gratis apparaatregistratie bij Cloudflare. Later vroeg hij
+expliciet `https://ijsbaannederbetuwe.nl/#onze-sponsors` standaard via Cloudflare
+te openen. Daarom blijft WARP nu verbonden als lokale proxy en start een
+afgebakende domeinregel automatisch bij Windows-aanmelding. Dit vervangt de
+eerdere afspraak om na iedere taak te disconnecten. Het autoriseert geen
+ongevraagde websitewijzigingen, externe berichten, andere systemen/domeinen
+of een VPN-tunnel voor de hele pc.
 
 Gecontroleerde installatie: `C:/Program Files/Cloudflare/Cloudflare WARP/`,
 `warp-cli 2026.8.2110.0`, Windows-service `CloudflareWARP`. De bestaande officiële
 MSI heeft een geldige Cloudflare-handtekening; installatie eindigde met code 0.
-Eindcontrole: registratie aanwezig, **Disconnected**, **Always On false**,
-**WarpProxy on port 40000**, **Packet Tunnel false**. Geen luisterpoort op
-40000 of de tijdelijke viewerpoort 8767 na afloop.
+Actuele eindstand: bestaande registratie, **Connected**, **Always On false**,
+**WarpProxy on port 40000**, **Packet Tunnel false**. Alleen loopback luistert
+op 40000 (WARP) en 40001 (PAC-helper). Tijdelijke viewer 8767 is gestopt.
+
+## Automatische browserroute op deze pc
+
+`deploy/windows/ijsbaan.pac` stuurt uitsluitend de exacte hosts
+`ijsbaannederbetuwe.nl` en `www.ijsbaannederbetuwe.nl` via
+`PROXY 127.0.0.1:40000; DIRECT`. Alle andere hosts, inclusief OpenAI en
+bedrijfs-/LAN-adressen, krijgen `DIRECT`. De regel geldt voor het hele domein,
+dus ook afbeeldingen en `/beheer/`; een URL-fragment zoals `#onze-sponsors`
+is geen aparte netwerkbestemming. Bij niet-beschikbare proxy is een directe
+verbinding de terugvalroute. Apps met eigen proxy-instellingen kunnen de
+Windows-instelling negeren; CLI-processen gebruiken zo nodig expliciet WARP.
+
+Windows-gebruiker `huver`: automatische configuratie
+`http://127.0.0.1:40001/ijsbaan.pac`, via de ondersteunde WinINet-API ingesteld
+en teruggelezen. De vooraf bestaande instelling (flags 9, lege PAC-URL) en de
+oorspronkelijke eigen opstartwaarde staan lokaal in
+`.deploy/windows-ijsbaan-route/before.json`; deze backup blijft behouden.
+De lokale helper serveert alleen de vaste PAC en een beperkte status,
+luistert uitsluitend op loopback en registreert geen browsegeschiedenis.
+Er is geen firewall-, DNS-, router- of certificaatwijziging.
+
+HKCU Run `IJsbaanDomainRoute` start de bestaande `C:/Python314/pythonw.exe`
+met `deploy/windows/ijsbaan_route.py serve`. Bij aanmelden controleert de
+helper eerst de bestaande WARP-proxymodus en verbindt die. Er wordt geen
+nieuwe registratie gemaakt en een andere WARP-modus wordt niet overschreven.
+Het markerbestand `.deploy/windows-ijsbaan-route/enabled` bepaalt of de
+helper blijft draaien. Een handmatige WARP-disconnect wordt niet telkens
+ongedaan gemaakt; heractiveren kan met `install`.
+
+Vanuit de projectmap:
+
+```powershell
+python deploy/windows/ijsbaan_route.py status
+python deploy/windows/ijsbaan_route.py install
+python deploy/windows/ijsbaan_route.py restore
+```
+
+`restore` herstelt de oorspronkelijke gebruikersproxy, verwijdert alleen de
+eigen opstartvermelding, disconnect WARP en laat de helper binnen twee seconden
+stoppen. Installatie en apparaatregistratie blijven behouden. Bij een inmiddels
+andere proxyconfiguratie weigert het script die blind te overschrijven.
+
+Controle op 26 oktober: directe HTTPS-verbinding reproduceerbaar time-out;
+via WARP HTTP CONNECT en SOCKS5 HTTP 200. Domeinregel getest met drie
+doeldomeinvarianten en acht andere hosts (allemaal DIRECT). Werkelijke gewone
+HTTPS-sponsorlink laadt in Chrome én de ingebouwde browser met 68 sponsors en
+het nieuwe logo. Voor de ingebouwde browser was `PROXY` nodig; de eerste
+SOCKS5-PAC gaf daar nog een verbindingsfout. Herstel is werkelijk uitgevoerd
+en teruggelezen; daarna is de definitieve instelling opnieuw geactiveerd.
+Opstartvermelding en herstart van de helper zijn gecontroleerd; er is geen
+volledige Windows-herstart uitgevoerd. Privébewijs staat in
+`.deploy/windows-ijsbaan-route/`.
+
+Documentatie:
+- https://developers.cloudflare.com/warp-client/warp-modes/#local-proxy
+- https://learn.microsoft.com/en-us/deployedge/configure-microsoft-edge-proxy-support
 
 ## Hergebruik
 
@@ -27,15 +85,16 @@ Eindcontrole: registratie aanwezig, **Disconnected**, **Always On false**,
    en verwijder de bestaande niet als routinematige reparatie.
 3. Bevestig `Mode: WarpProxy on port 40000` en `Packet Tunnel: false` voordat
    `connect` wordt gebruikt. De proxy moet alleen op `127.0.0.1:40000` luisteren.
-4. Alleen het taakproces krijgt `--proxy socks5h://127.0.0.1:40000 --noproxy ''`.
+4. CLI-taakprocessen kunnen `--proxy socks5h://127.0.0.1:40000 --noproxy ''`
+   gebruiken als zij de Windows-PAC niet ondersteunen.
    Behoud gewone HTTPS-certificaatcontrole, vaste bestemming, beperkte time-outs
    en geen automatische herhaling van onzekere schrijfacties. Verander geen
-   algemene Windows/browser-proxy, DNS, router, firewall of volledige VPN-route.
+   de vastgelegde domeinlijst, DNS, router, firewall of volledige VPN-route.
 5. Gebruik het bestaande sponsorbeheer, DPAPI-auth, sessie/CSRF, revision en
    duplicaatcontrole. Een logo-/profielwijziging verstuurt geen nieuwe aanvraag
    of mail. Bewaar de opslagontvangst direct en lees de werkelijke opslag terug.
-6. Log de beheersessie uit, stop eigen controleprocessen en voer `disconnect`
-   uit. Verifieer **Disconnected**. Behoud installatie en apparaatregistratie.
+6. Log de beheersessie uit en stop eigen tijdelijke controleprocessen. Behoud
+   de vaste domeinroute, WARP-verbinding, installatie en apparaatregistratie.
 
 Cloudflare-documentatie over de gekozen lokale proxymodus:
 https://developers.cloudflare.com/warp-client/warp-modes/#local-proxy
