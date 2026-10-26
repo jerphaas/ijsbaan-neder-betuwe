@@ -59,11 +59,19 @@
   of mail; alle andere profielvelden bleven gelijk. Zie
   `deploy/srv01/20261014/README.md` voor bron en bewijs. De eerdere melding
   "nog niet geüpload" is historisch; lees het actuele profiel vóór iedere wijziging.
-- Bij de verbindingsblokkade op 14 oktober werkte de door de gebruiker gevraagde
-  tijdelijke Cloudflare WARP-proxy op `127.0.0.1:40000`. Alleen het aangewezen
-  proces gebruikte SOCKS5 met normale TLS; de algemene pc-route veranderde niet.
-  De tijdelijke client en taakregistratie zijn na de controle volledig verwijderd.
-  Bestaande DPAPI-credentials bleven lokaal. Zie de bovenstaande documentatie
-  voor de concrete gebruikerskeuze, verificatie en tijdelijke-installatiegrens.
-  Gebruik dit bewijs bij een volgende diagnose; maak niet opnieuw tijdelijke
-  serverhelpers voor dezelfde netwerkfout en heropen geen gesloten incidentroute.
+- Cloudflare WARP is op 26 oktober 2026 opnieuw geïnstalleerd. De gebruiker wil
+  de installatie en apparaatregistratie nu uitdrukkelijk BEWAREN voor hergebruik;
+  dit vervangt de tijdelijke-installatiegrens van 14 oktober. Hergebruik de
+  bestaande registratie, geen `registration new` of herinstallatie als standaard.
+  Gebruik voor geautoriseerde IJsbaan-taken alleen de lokale SOCKS5-proxy op
+  `127.0.0.1:40000`, met gewone TLS-controle en uitsluitend het aangewezen proces.
+  Na afloop `disconnect`, geen uninstall of registratieverwijdering. Laat de
+  algemene pc-route ongewijzigd. Werkwijze en bewijs: `deploy/WARP-HERGEBRUIK.md`.
+  Bestaande DPAPI-credentials blijven lokaal. Maak geen tijdelijke serverhelpers
+  voor dezelfde netwerkfout en heropen geen gesloten incidentroute.
+- Windkracht 10 Producties is op 26 oktober 2026 live toegevoegd vanuit de
+  bestaande aanvraag: profiel `sp-bf6bcfbcbddb373725eeba82`, revision 1, logo en
+  website van 123ledschermhuren.nl. 69 opgeslagen profielen, 68 zichtbaar.
+  Beide publieke sponsorblokken, desktop/mobiel en volledige carrouselcyclus zijn
+  gecontroleerd; overige sponsors en aanvraag/mailtellers zijn behouden. Zie
+  `deploy/WARP-HERGEBRUIK.md`; niet nogmaals toevoegen.
