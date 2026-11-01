@@ -90,3 +90,11 @@
   Beide publieke sponsorblokken, desktop/mobiel en volledige carrouselcyclus zijn
   gecontroleerd; overige sponsors en aanvraag/mailtellers zijn behouden. Zie
   `deploy/WARP-HERGEBRUIK.md`; niet nogmaals toevoegen.
+
+- BeaupainFood en PizzAmore zijn op 1 november 2026 live toegevoegd met de
+  originele aangeleverde logo's: `sp-2eb5fc22c91fd72b6d8a9a7c` en
+  `sp-d5e54827931e4900400850a6`, beide revision 1. 73 profielen, 72 zichtbaar.
+  Beide publieke sponsorblokken en opgeslagen logo's zijn teruggelezen;
+  overige sponsors en aanvraag/mailtellers bleven gelijk. Browsercontrole
+  was geblokkeerd door vergrendeld Windows. Niet opnieuw toevoegen.
+  Zie `deploy/LOGOS-BEAUPAIN-PIZZAMORE-20261101.md` voor bron en bewijs.
