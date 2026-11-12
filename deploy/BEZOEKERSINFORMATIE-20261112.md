@@ -1,8 +1,13 @@
 # HKV Ochten, catering en openingstijden vandaag
 
 Opdrachtgever bevestigde op 12 november 2026 HKV Ochten als sponsor van de
-boarding, Steven Beaupain uit Opheusden voor catering en drankjes, en een
+boarding, BeaupainFood voor catering en drankjes, en een
 dagmelding die pas vanaf de opening zichtbaar mag zijn.
+
+Laatste gebruikerscorrectie op 12 november: **Steven Beaupain & Sanne Slootweg
+uit Kesteren** verzorgen de catering. Dit vervangt de eerdere vermelding van
+alleen Steven met Opheusden als woonplaats. Alleen de cateringtekst en deze
+bronnotities wijzigen; het logo en de sponsorprofielen blijven gelijk.
 
 ## Bron en sponsoropslag
 

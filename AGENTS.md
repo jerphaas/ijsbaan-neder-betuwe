@@ -102,7 +102,8 @@
 - Op verzoek van 12 november 2026: de dagmelding boven de hero blijft verborgen
   tot 11 december en buiten het bekende rooster. Deel de bronlogica met de tabel
   via `opening-hours.js`; gebruik de Nederlandse kalenderdag. Steven Beaupain
-  krijgt een aparte cateringvermelding met het bestaande BeaupainFood-logo.
+  & Sanne Slootweg uit Kesteren krijgen een aparte cateringvermelding met het
+  bestaande BeaupainFood-logo (laatste naam/plaatscorrectie 12 november 2026).
 - HKV Ochten is op 12 november live toegevoegd als sponsor van de boarding:
   `sp-b465c049bf3ea84b079f67e2`, revision 1, https://www.hkvochten.nl/.
   74 profielen, 73 zichtbaar; overige profielen en aanvraag/mailtellers behouden.

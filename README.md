@@ -89,7 +89,7 @@ Het rooster is op 12 november 2026 opnieuw door de opdrachtgever bevestigd en ve
 
 De melding boven de hero toont vanaf 11 december de openingstijden van vandaag of dat de baan gesloten is. `opening-hours.js` levert dezelfde daggegevens aan de melding en de roostertabel. De melding is vóór de start en na het bekende rooster verborgen en gebruikt `Europe/Amsterdam`, ook als de bezoeker een andere tijdzone heeft. Een open tab ververst bij een nieuwe dag en na terugkeer uit de achtergrond. Datumproeven: `node tests/opening-hours.test.mjs`.
 
-Steven Beaupain uit Opheusden verzorgt volgens de opdrachtgever de catering en drankjes. Hij staat daarom apart bij de bezoekersinformatie, met het originele BeaupainFood-logo uit Tons mail en de bestaande website. Het sponsorprofiel blijft behouden. HKV Ochten is als boarding-sponsor toegevoegd met het originele logo van hkvochten.nl; bron en opslagbewijs staan in `deploy/BEZOEKERSINFORMATIE-20261112.md`.
+Steven Beaupain & Sanne Slootweg uit Kesteren verzorgen volgens de opdrachtgever de catering en drankjes (namen en plaats gecorrigeerd op 12 november 2026). Zij staan daarom apart bij de bezoekersinformatie, met het originele BeaupainFood-logo uit Tons mail en de bestaande website. Het sponsorprofiel blijft behouden. HKV Ochten is als boarding-sponsor toegevoegd met het originele logo van hkvochten.nl; bron en opslagbewijs staan in `deploy/BEZOEKERSINFORMATIE-20261112.md`.
 
 ## Lokaal bekijken
 
