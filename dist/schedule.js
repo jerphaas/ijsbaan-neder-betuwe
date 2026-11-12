@@ -11,13 +11,8 @@
   const days = [];
   for (const cursor = date(edition.start); cursor <= date(hours.through); cursor.setUTCDate(cursor.getUTCDate() + 1)) {
     const iso = cursor.toISOString().slice(0, 10);
-    const weekday = cursor.getUTCDay();
-    const reason = hours.closedDates[iso] || '';
-    const closed = Boolean(reason) || hours.closedWeekdays.includes(weekday);
-    const special = hours.specialDates?.[iso];
-    const school = !closed && iso >= hours.schoolStart && iso <= hours.schoolEnd;
-    const note = special?.note || (school ? '09.00–15.00 uur: alleen scholen' : '');
-    days.push({ iso, weekday, reason, closed, note, times: special?.times || (school ? hours.schoolDay : hours.dayOff) });
+    const day = window.IJSBAAN_HOURS.day(edition, iso);
+    if (day) days.push(day);
   }
 
   // Bundle a short opening weekend with the first full week.
@@ -81,7 +76,7 @@
     }));
     if (announce) announcement.textContent = `Openingstijden voor ${range(weeks[index])}, ${edition.season}.`;
   }
-  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Amsterdam' }).format(new Date());
+  const today = window.IJSBAAN_HOURS.localDate(new Date());
   const current = weeks.findIndex(week => week.some(day => day.iso === today));
   show(current < 0 ? 0 : current);
   host.replaceChildren(picker, table, announcement);
