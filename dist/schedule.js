@@ -14,11 +14,10 @@
     const weekday = cursor.getUTCDay();
     const reason = hours.closedDates[iso] || '';
     const closed = Boolean(reason) || hours.closedWeekdays.includes(weekday);
-    const holiday = iso >= hours.holidayStart && iso <= hours.holidayEnd;
     const special = hours.specialDates?.[iso];
     const school = !closed && iso >= hours.schoolStart && iso <= hours.schoolEnd;
     const note = special?.note || (school ? '09.00–15.00 uur: alleen scholen' : '');
-    days.push({ iso, weekday, reason, closed, note, times: special?.times || (holiday || weekday === 6 ? hours.dayOff : hours.schoolDay) });
+    days.push({ iso, weekday, reason, closed, note, times: special?.times || (school ? hours.schoolDay : hours.dayOff) });
   }
 
   // Bundle a short opening weekend with the first full week.

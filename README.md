@@ -85,7 +85,7 @@ De startdatum is 11 december 2026. De Wordbrief vermeldt 3 januari 2027 als eind
 
 Op verzoek van 14 september 2026 slaat het sponsorformulier aanvragen op in MySQL en stuurt het e-mails naar Ton en de sponsor. Het originele PDF-bestand blijft als bron aanwezig; bezoekers hoeven het niet meer in te vullen.
 
-Het definitieve rooster is op 1 oktober 2026 door de opdrachtgever aangeleverd. Opening vrijdag 11 december om 18.00 uur: gratis schaatsen zolang er schaatsen beschikbaar zijn (op = op). Eerste schoolweek 14–18 december: 9.00–15.00 uur alleen scholen, 15.00–20.00 uur iedereen. 21–24 en 28–30 december: 10.00–20.00 uur, inclusief maandag 21 en 28 december. 31 december en 2 januari: 10.00–16.00 uur. De eerder bevestigde zaterdaguren op 12 en 19 december (10.00–20.00 uur) en sluiting op zondag, beide kerstdagen en nieuwjaarsdag blijven behouden. Het rooster loopt tot en met 3 januari (zondag, gesloten); `through` bevestigt geen officiële einddatum. De sluitingstijd van de openingsavond is niet opgegeven en wordt als “vanaf 18.00” getoond. Het originele sponsorformulier blijft ongewijzigd.
+Het rooster is op 12 november 2026 opnieuw door de opdrachtgever bevestigd en vervangt de tijden van 1 oktober. Normaal maandag tot en met zaterdag 10.00–20.00 uur. Openingsavond vrijdag 11 december 2026: 19.00–22.00 uur, zonder entree. Van 14 tot en met 18 december: overdag schoolschaatsen (eerder bevestigd 9.00–15.00 uur), publiek 15.00–20.00 uur. Op 24 en 31 december: 10.00–16.00 uur. Gesloten op zondag, 25 en 26 december en 1 januari. Zaterdag 2 januari 2027: 10.00–14.00 uur. Het rooster loopt tot en met 3 januari (zondag, gesloten); `through` bevestigt geen officiële einddatum. Het originele sponsorformulier blijft ongewijzigd.
 
 ## Lokaal bekijken
 
