@@ -44,3 +44,37 @@ Vooraf bekeken op desktop en mobiel via een lokale kopie met gecontroleerde
 testdatum. 11 december: 19.00–22.00 zonder entree; 14 december: publiek
 15.00–20.00; 25 december: gesloten. Gemeten breedtes 1265 en 375 px zonder
 horizontale overloop. Het productie-script bevat geen testklok.
+
+## Publicatie en verse controle
+
+Websitecommit `9e76f48f9e8576b210267644117b7a88b35fd14c` is gepusht en op
+12 november gepubliceerd. GitHub Pages-run `43226026279` slaagde;
+hoofdhosting-run `43226026434` was overgeslagen. Daarom is de bestaande,
+gedocumenteerde DirectAdmin-route via de lokale WARP-proxy gebruikt.
+
+Scope: `opening-hours.js`, `today.js`, `visit-extras.css`, het Beaupain-logo,
+`schedule.js`, `index.html` en daarna `site-version.json`. De nieuwe locaties
+gaven vooraf 404; bestaande bytes kwamen overeen met live commit `7675fd0`.
+Private backups van bestaande bestanden zijn exact teruggelezen vóór
+overschrijven. Alle nieuwe bytes en de echte homepage zijn via HTTPS exact
+vergeleken, buiten de twee ongewijzigde sponsorblokken met 73 sponsors.
+Versiebewijs vermeldt `deployment=visitor-information-only`; dit is geen
+volledige backendpublicatie. Geen configuratie, aanvragen of mail gewijzigd.
+
+De browsercontrole gebruikte verse ongewijzigde publieke responses via een
+alleen-lezen loopbackviewer. De directe IAB-route via de eerder niet-actieve
+PAC-helper is hiermee niet gerepareerd. Desktop 1265 px, mobiel 375 px, beide
+zonder horizontale overloop. Alle 73 sponsors kwamen volledig voorbij in
+19 desktop- en 37 mobiele carrouselstappen, inclusief terugkeer naar het begin;
+alle aanwezige logo's waren geladen. HKV-logo, website en boardingvermelding
+zijn ook in het volledige overzicht bekeken. Het cateringblok is op beide
+formaten gecontroleerd; de dagmelding was op de echte datum verborgen.
+Alle 24 roosterdagen zijn via de drie periodeknoppen teruggelezen.
+Geen browserconsolefouten. De tijdelijke viewport is teruggezet en de viewer
+gestopt. `python scripts/check_seo.py --live` slaagde voor deze commit.
+
+Privaat bewijs: `.deploy/visitor-info-20261112/`, inclusief voor/na-bestanden,
+backup- en uploadontvangsten, versie, bronhashes, carrouselreeksen en screenshots.
+De eenmalige begrensde publicatiehelper staat in
+`C:/Users/huver/Documents/Codex/2026-11-12/ij/work/publish_visitor_info.py`.
+Niet opnieuw uitvoeren zonder actuele bron- en ontvangstcontrole.
