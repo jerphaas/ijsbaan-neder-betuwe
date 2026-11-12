@@ -1,5 +1,47 @@
 # Website publiceren via SRV01 en DirectAdmin
 
+## Hergebruik via lokale WARP-proxy (geverifieerd 12 november 2026)
+
+De correctie van de openingstijden is gepubliceerd als commit
+`7675fd0d31e49b34a3e567b31cc31e968783e9d0`. De bestaande DirectAdmin-host,
+accountlogin via `scripts/hosting.py::ftp_password()`, accountpaden en
+multipart-aanroepen hieronder werkten ook rechtstreeks vanaf PC-JERPHAAS
+via de bestaande WARP-proxy `socks5h://127.0.0.1:40000`. Er was geen nieuwe
+SRV01-helper, registratie of credential nodig. Dit behoudt de eerder expliciet
+goedgekeurde HTTP-route van DirectAdmin; het maakt die laatste verbinding
+niet tot HTTPS. Publieke eindcontroles gebruiken normale HTTPS-certificaatcontrole.
+
+Voor deze beperkte publicatie zijn alleen `edition.js`, `schedule.js`,
+`app.js`, `index.html` en daarna `site-version.json` geplaatst. Alle oude bytes
+kwamen vooraf overeen met live commit `5402e7b`; bronhashen zijn vóór het
+schrijven opnieuw gecontroleerd. Per bestand is een private backup met prefix
+`hours-20261112-` exact teruggelezen, gevolgd door het opgeslagen doelbestand.
+De echte homepage en publieke scripts kwamen daarna exact overeen met de
+nieuwe commit, buiten de twee ongewijzigde sponsorblokken (72 sponsors).
+Backend, database, configuratie en mail zijn niet gewijzigd.
+
+GitHub Pages-run `43222177239` slaagde. Hoofdhosting-run `43222177155` was
+overgeslagen omdat `IJSBAAN_AUTO_DEPLOY` nog niet is ingesteld. Controleer dit
+bij volgende publicaties; publiceer nooit tegelijk met een actieve hostingrun.
+`python scripts/check_seo.py --live` slaagde via tijdelijke procesvariabelen
+`HTTPS_PROXY` en `HTTP_PROXY` met waarde `http://127.0.0.1:40000`.
+
+De directe IAB-navigatie gaf een time-out; de PAC-helper op 40001 was niet
+actief. Desktop en mobiel zijn gecontroleerd via de bestaande alleen-lezen
+loopbackviewer met verse, ongewijzigde publieke HTTPS-responses. Alle drie
+roosterperiodes zijn bediend: 24 dagen, inclusief 11 december 19.00–22.00,
+24/31 december 10.00–16.00 en 2 januari 10.00–14.00. Gemeten paginabreedtes
+1265 en 375 px zonder horizontale overloop. Tijdelijke viewport teruggezet;
+deze verificatie repareert de aparte PAC-helper niet.
+
+Private bronbestanden, backups, opslagontvangsten, versiebewijs en hashes van
+de browserbronnen staan in `.deploy/hours-20261112/`. De eenmalige, op vier
+bestanden en één commit begrensde taakhelper staat in
+`C:/Users/huver/Documents/Codex/2026-11-12/ij/work/publish_hours.py`.
+Niet blind opnieuw uitvoeren: controleer actuele bronversie, scope en backupnamen.
+
+## Historische publicatie via SRV01
+
 Bewezen op 1 oktober 2026: de definitieve openingstijden staan op het primaire
 domein. Gepubliceerde websitecommit: `5402e7b4a7e1c21480899d0307ac645f04df35a3`.
 De gebruiker vroeg deze route ook vast te leggen voor volgende websitewijzigingen.
